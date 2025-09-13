@@ -1,0 +1,73 @@
+* {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+}
+
+html {
+        font-size: 16px;
+        overflow: hidden;
+        height: 100%;
+}
+
+body {
+        font-family: 'Lexend', sans-serif;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #000;
+        background-color: #fff;
+}
+
+h1, h2, h3, h4, h5, h6 {
+        font-family: 'Varela Round', sans-serif;
+        margin-bottom: 1rem;
+        font-weight: 400;
+}
+
+p {
+        margin-bottom: 1rem;
+        font-size: 1rem;
+}
+
+.round {
+        font-family: "Varela Round", sans-serif;
+        font-weight: 400;
+}
+
+.zh {
+        font-family: "Noto Sans SC", sans-serif;
+}
+
+.thin {
+        font-weight: 100;
+}
+
+.light {
+        font-weight: 250;
+}
+
+.regular {
+        font-weight: 400;
+}
+
+.semiBold {     
+        font-weight: 550;
+}
+
+.bold {
+        font-weight: 700;
+}
+
+.black {
+        font-weight: 900;
+}
+
+a, .btn {
+        text-decoration: none;
+        color: inherit;
+}
+
+section, header, footer, nav, article, div {
+        display: block;
+}
+

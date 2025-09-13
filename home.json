@@ -1,0 +1,57 @@
+{
+        "meta": {
+                "en_title": "<h1>root@Home_Page</h1>",
+                "zh_title": "<h1>root@家</h1>",
+                "en_subtitle": "<p>Learn about me.</p>",
+                "zh_subtitle": "<p>下认识我</p>", 
+                "languages": ["en", "zh"]
+        },
+
+        "content": [
+
+        {"type": "header", "data":{
+                "text":"<a href=\"home.html\"><h1>Alexandra J. Marx</h1></a>",
+                "toggle": { 
+                        "location": "east",
+                        "type": "language",
+                        "dual": true,
+                        "options": [
+                                "<b>en</b>",
+                                "<zh>汉</zh>"
+                        ]
+                }
+        }},
+
+        {"type": "pageStack", "data":{
+                "location": "left",
+                "en_title": "<h1>My Blog:</h1>",
+                "zh_title": "<h1>我的博客:</h1>",  
+                "directory": "/blog",
+                "order": "descending age"
+        }},
+
+        {"type": "body", "content":[
+                {"type": "text", "data": {"all": "<center><h1>%whoami</h1></center>\n"}},
+                {"type": "img", "data": {
+                        "location" : "east",
+                        "file": "/files/portrait.jpg",
+                        "width": 0.5,
+                        "en_hover": "My Professional Portrait (2025)",
+                        "zh_hover": "我的正式的肖像（2025）"
+                }},
+                {"type":"text", "data":{"en": "I am <b>Alexandra Marx</b>. An undergraduate CS and Mathematics major at the University of Michigan in Ann Arbor.\n", "zh": "我叫<b>Alexandra Marx （马心婕）</b>，密西根大学的电脑科学和数学专业本科生在安娜堡。\n"}},
+                {"type":"center", "content":[
+                        {"type":"icon", "data":{
+                                "name": "Github",
+                                "image": "/files/github.png",
+                                "link": "https://github.com/AjjMarx"
+                        }},
+                        {"type":"icon", "data":{
+                                "name": "LinkedIn",
+                                "image": "/files/LinkedIn.png",
+                                "link": "https://www.linkedin.com/in/alexandra-marx-85622a242/"
+                        }}
+                ]}
+        ]}
+        ]
+}
