@@ -10,7 +10,7 @@
         "content": [
 
         {"type": "header", "data":[
-                {"type": "text", "data":"<a href=\"home.html\"><h1>Alexandra J. Marx</h1></a>"},
+                {"type": "text", "data":"<a href=\"home\"><h1 class=\"bold\">Alexandra J. Marx</h1></a>"},
                 {"type": "toggle", "data":{ 
                         "location": "east",
                         "type": "language",
