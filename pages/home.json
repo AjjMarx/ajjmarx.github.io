@@ -22,7 +22,7 @@
                 }}
         ]},
 
-        {"type": "pageStack", "data":{
+        {"type": "pageStack", "priority": 1, "data":{
                 "location": "left",
                 "en_title": "<h1>My Blog:</h1>",
                 "zh_title": "<h1>我的博客:</h1>",  
@@ -30,7 +30,7 @@
                 "order": "descending age"
         }},
 
-        {"type": "body", "data":[
+        {"type": "body", "priority": 0, "data":[
                 {"type": "text", "data": {"all": "<center><h1>%whoami</h1></center><span class=\n"}},
                 {"type": "img", "data": {
                         "location" : "right",
@@ -39,7 +39,7 @@
                         "en_hover": "My Professional Portrait (2025)",
                         "zh_hover": "我的正式的肖像（2025）"
                 }},
-                {"type":"text", "data":{"en": "I am <b>Alexandra Marx</b>. An undergraduate CS and Mathematics major at the University of Michigan in Ann Arbor.\n", "zh": "我叫<b>Alexandra Marx （马心婕）</b>，密西根大学的电脑科学和数学专业本科生在安娜堡。\n"}},
+                {"type":"text", "data":{"en": "I am <b>Alexandra Marx</b>. An undergraduate CS and Mathematics major at the University of Michigan in Ann Arbor.\nLorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.\n\nLorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.\n\nLorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.\n\nLorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.\n\nLorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.", "zh": "我叫<b>Alexandra Marx （马心婕）</b>，密西根大学的电脑科学和数学专业本科生在安娜堡。\n"}},
                 {"type":"center", "data":[
                         {"type":"icon", "data":{
                                 "name": "Github",

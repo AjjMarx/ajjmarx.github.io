@@ -1,18 +1,20 @@
 window.addEventListener("DOMContentLoaded", async () => {
         const app = document.getElementById("app");
 
-        try {
+        //try {
                 const res = await fetch(findPageFileName(window.location.pathname));
                 const data = await res.json();
 
                 renderPage(app, data);
-        } catch(err) {
-                console.error("Loading error :(");
-                const test = document.createElement("div"); 
-                test.innerHTML = "404";
-                container.appendChild(test);
-        }
+        //} //catch(err) {
+          //      console.error("Loading error :(");
+          //      const test = document.createElement("div"); 
+          //      test.innerHTML = "404";
+          //      container.appendChild(test);
+       // }
 });
+
+horizontalElements = 0
 
 function renderPage(container, data) {
 //        const test = document.createElement("div");
@@ -20,6 +22,7 @@ function renderPage(container, data) {
 //        container.appendChild(test);	
 	customElements.define('special-div', SpecialDiv, { extends: 'div' });
 
+	
         for (const key of Object.keys(data)) {
                 console.log(key);
         }
@@ -27,6 +30,13 @@ function renderPage(container, data) {
         for (const key of Object.keys(data.meta)) {
                 console.log(key, data.meta[key]);
         }
+
+	for (const item of data.content) {
+		if(item["type"] == "header" || item["type"] == "pageStack") {
+			horizontalElements++;	
+		}
+	}
+	console.log(horizontalElements);
 
         for (const item of data.content) {
                 //console.log(item);
@@ -55,7 +65,6 @@ function header(container, data) {
         header.style.right = "-4px"
         header.style.top = "-4px";
         header.style.height = "75px";
-        header.style.borderRadius = "0px 0px 2em 2em";
 
         let textDiv;
         for (const item of data) {
@@ -90,14 +99,32 @@ function header(container, data) {
 
 function pageStack(container, data) {
         console.log("creating pageStack..");
-        const box = document.createElement("div", { is: "special-div" });   
-        container.appendChild(box);
-        box.style.position = "absolute";
-        box.style.width = "25%";
-        box.style.left = "0px";
-        box.style.top = "80px"; 
-        box.style.bottom = "0px";
+	const box = document.createElement("div", { is: "special-div" });   
+	container.appendChild(box);
+	box.style.position = "absolute";
+	let wideWidth = "calc(25% - 4px)"
+	let narrowWidth = "0px";
+	if (parseInt(container.offsetWidth, 10) >= 700) {
+		box.style.width = wideWidth;
+	} else {
+		box.style.width = narrowWidth;
+	}
+	box.style.left = "0px";
+	box.style.top = "80px"; 
+	box.style.bottom = "0px";
 	box.reload();
+
+		
+
+	window.addEventListener("resize", () => {
+		if (parseInt(container.offsetWidth, 10) >= 700) {
+			box.style.width = wideWidth;
+			box.reload();
+		} else {
+			box.style.width = narrowWidth;
+			box.reload(); 
+		}
+	});
 }
 
 function body(container, data) {
@@ -105,24 +132,44 @@ function body(container, data) {
         const body = document.createElement("div", { is: "special-div" });   
         container.appendChild(body);
         body.style.position = "absolute";
-        body.style.width = "calc(75% - 12px)";
+	let wideWidth = "calc(75% - 4px)";
+	let narrowWidth = "calc(100%)";
+	if (parseInt(container.offsetWidth, 10) > 700) {
+		body.style.width = wideWidth;
+	} else {
+		body.style.width = narrowWidth;
+	}
         body.style.right = "0px";
         body.style.top = "80px";
         body.style.bottom = "0px";
 	let footer_allow = true
+	body.reload();
         for (const item of data) {
                 console.log(item);
 		if (item["type"] == "footer" && footer_allow) { 
 			body.style.bottom = "42px";
+			body.reload();
 			const footer = document.createElement("div");
 			container.appendChild(footer);
 			footer.style.position = "absolute";
-			footer.style.width = "calc(75% - 32px)";
+			if (parseInt(container.offsetWidth, 10) >= 700) {
+				footer.style.width = wideWidth;
+			} else {
+				footer.style.width = narrowWidth;
+			}
 			footer.style.right = "10px";
 			footer.style.bottom = "8px";
 			footer.style.height = "28px";
 			
 			footer_allow = false;
+
+			window.addEventListener("resize", () => {
+				if (parseInt(container.offsetWidth, 10) >= 700) {
+					footer.style.width = wideWidth;
+				} else {
+					footer.style.width = narrowWidth; 
+				}
+			});	
 
 			for (const footer_item of item["data"]) {
                 		renderFunctions[footer_item["type"]](footer, footer_item["data"]);
@@ -131,9 +178,16 @@ function body(container, data) {
                 	renderFunctions[item["type"]](body, item["data"]);
 		}
         }       
-	body.content.style.padding = "40px";
-	body.reload();
-        console.log("done rendering body");
+        window.addEventListener("resize", () => {
+		if (parseInt(container.offsetWidth, 10) >= 700) {
+			body.style.width = wideWidth;
+			body.reload();
+		} else {
+			body.style.width = narrowWidth;
+			body.reload(); 
+		}
+	});
+	console.log("done rendering body");
 }
 
 function text(container, data) {
@@ -169,10 +223,23 @@ function img(container, data) {
 	img.src = data["file"];
 	img.title = data["en_hover"];
 	img.alt = data["en_hover"];
+	img.style.display = "block";
+	img.style.float = "left";
+	img.style.margin = "1em 1em 1em 1em";
 	img.style.height = '30%';
 	//img.style.objectFit = "cover";
 	img.style.borderRadius = "12px";
 	container.appendChild(img);
+
+	window.addEventListener("resize", () => {
+		if (parseInt(container.offsetWidth, 10) > 700) {
+			img.style.float = "left";
+			img.style.margin = "1em 1em 1em 1em";
+		} else {	
+			img.style.float = "none";
+			img.style.margin = "1em auto";
+		}
+	});
 }
 
 function toggle(container, data) {
@@ -200,6 +267,7 @@ const renderFunctions = {
 class SpecialDiv extends HTMLDivElement {
 	constructor() {
 		super();
+		//this.style.padding = "4px";
 
 		this.content = document.createElement("div");
 		this.appendChild(this.content);
@@ -208,6 +276,9 @@ class SpecialDiv extends HTMLDivElement {
 		this.content.style.height = "calc(100% - 16px)";
 		this.content.style.top = "8px";
 		this.content.style.right = "8px";
+		this.content.style.padding = "10px 10% 10px 10%";
+		this.content.style.overflow = "auto";
+		this.content.style.textAlign = "justify";
 		
 		this.frame = document.createElement("div");
 		this.appendChild(this.frame);
