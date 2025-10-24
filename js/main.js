@@ -110,9 +110,10 @@ function pageStack(container, data) {
 	box.style.padding = "4px 4px 4px 4px";
 	box.style.top = "calc(2em + 3px)"; 
 	box.style.bottom = "8px";
-	box.style.backgroundColor = "yellow";
+	//box.style.backgroundColor = "yellow";
 	box.style.overflow = "auto";	
 	//box.reload();
+	box.style.direction = 'rtl';
 
 	let tp = 33;
 
@@ -120,8 +121,8 @@ function pageStack(container, data) {
 		const pg = document.createElement("special-div");
 		//pg.style.backgroundColor = "blue";
 		pg.style.position = "absolute";
-		pg.style.width = wideWidth + "px";
-		pg.style.left = "0px";
+		pg.style.width = (wideWidth - 14) + "px";
+		pg.style.left = "14px";
 		pg.style.height = "6em";
 		pg.style.top = tp + "px";
 		tp = tp + 100;
