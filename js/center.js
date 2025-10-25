@@ -1,7 +1,7 @@
 function addCenter(container, data, name) {
         //console.log("centering..");
 	const body = document.createElement("div");
-	body.id = name;
+	body.id = assignName(name);
 	//body.style.textAlign = "center";
 	body.style.display = "inline-block";
 	//body.style.width = "100%";

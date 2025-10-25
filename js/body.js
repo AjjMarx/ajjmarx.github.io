@@ -1,7 +1,7 @@
 function addBody(container, data, name) {
         //console.log("creating body..");
         const body = document.createElement("special-div");
-	body.id = name;   
+	body.id = assignName(name);   
 	container.appendChild(body);
         body.style.position = "absolute";
 	let wideWidth = "692px";
@@ -27,7 +27,7 @@ function addBody(container, data, name) {
 			body.style.bottom = "42px";
 			body.reload();
 			const footer = document.createElement("div");
-			if (item.id) { footer.id = parseInt(item.id,16); } else { footer.id = 0; }
+			footer.id = assignName(item.id);
 			container.appendChild(footer);
 			footer.style.position = "absolute";
 			if (parseInt(container.offsetWidth, 10) >= 1000) {
@@ -53,12 +53,10 @@ function addBody(container, data, name) {
 			});	
 
 			for (const footer_item of item["data"]) {
-				const id = footer_item.id ?? 0;
-                		spawnFunctions[footer_item["type"]](footer, footer_item["data"], parseInt(id,16));	
+                		spawnFunctions[footer_item["type"]](footer, footer_item["data"], footer_item.id);	
 			}
 		} else {
-			const id = item.id ?? 0;
-			spawnFunctions[item["type"]](body, item["data"], parseInt(id,16));  
+			spawnFunctions[item["type"]](body, item["data"], item.id);  
 		}
         }       
         window.addEventListener("resize", () => {

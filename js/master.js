@@ -61,21 +61,21 @@ function renderPage(container, data) {
                 //for (const key of Object.keys(item)) {
                 //        console.log(key, item[key]);
                 //}
-		const id = item.id ?? 0;
-                spawnFunctions[item["type"]](container, item["data"], parseInt(id,16));
+                spawnFunctions[item["type"]](container, item["data"], item.id);
         }
 
 	//console.log(window.location.pathname);
 }
 
-function updatePage(container, data) { //for swapping out JSONs, not general updates, just use DOM for that
+function updatePage(container, data) { //for swapping out JSONs, not general updates, I just use DOM for that
 //Start by matching up trees by ID, 
 //Matching nodes get transition animations
 //Fade out originals with no match
 //Fade in any new elements with no match
 	//console.log(container);
-	const specialDivs = Array.from(container.getElementsByTagName('special-div'));
-	divs = specialDivs.concat(Array.from(container.getElementsByTagName('div')));
+	specialDivs = Array.from(container.getElementsByTagName('special-div'));
+	normalDivs = specialDivs.concat(Array.from(container.getElementsByTagName('div')));
+	const divs = normalDivs.concat(Array.from(container.getElementsByTagName('img')));
 	console.log("Locating live elements in container that have valid IDs");
 	let oldHTML = [];
 	for (const elm of divs) {

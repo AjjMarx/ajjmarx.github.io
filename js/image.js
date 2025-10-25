@@ -1,7 +1,7 @@
 function addImg(container, data, name) {
         //console.log("creating image..");
 	const img = document.createElement("img");
-	img.id = name;
+	img.id = assignName(name);
 	img.src = data["file"];
 	img.title = data["en_hover"];
 	img.alt = data["en_hover"];

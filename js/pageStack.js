@@ -1,7 +1,7 @@
 function addPageStack(container, data, name) {
         //console.log("creating pageStack..");
 	const box = document.createElement("div");
-	box.id = name;   
+	box.id = assignName(name);   
 	container.appendChild(box);
 	box.style.position = "absolute";
 	let wideWidth = 302;
@@ -26,7 +26,7 @@ function addPageStack(container, data, name) {
 	for (let i = 0; i < 10; i++) {
 		const pg = document.createElement("special-div");
 		//pg.style.backgroundColor = "blue";
-		pg.id = 0;
+		pg.id = assignName(0);
 		pg.style.position = "absolute";
 		pg.style.width = (wideWidth - 14) + "px";
 		pg.style.left = "14px";
