@@ -28,7 +28,8 @@ function addBody(container, data, name) {
 			body.reload();
 			const footer = document.createElement("div");
 			footer.id = assignName(item.id);
-			typeHash.set(footer.id, "footer");
+			body.footerId = footer.id;
+			typeHash.set(parseInt(footer.id, 16), "footer");
 			container.appendChild(footer);
 			footer.style.position = "absolute";
 			if (parseInt(container.offsetWidth, 10) >= 1000) {
@@ -56,7 +57,7 @@ function addBody(container, data, name) {
 			generateChildren(footer, item["data"]);
 		} else {
 			const id = assignName(item.id);
-			typeHash.set(id, item["type"]);
+			typeHash.set(parseInt(id, 16), item["type"]);
 			spawnFunctions[item["type"]](body, item["data"], id);  
 		}
         }       
@@ -75,16 +76,56 @@ function addBody(container, data, name) {
 }
 
 async function removeBody(element) {
-	console.log(element);
-	console.log(element.getBoundingClientRect().top);
-	let botm = parseInt(element.style.bottom, 10);
-	await interpolate(0, parseInt(element.getBoundingClientRect().height, 10), 0, 4, 500, (value) => {
+	console.log("removing body"); 
+	//console.log(element);
+	if (!element) { return; }
+	let botm = parseInt(element.style.bottom);
+	await interpolate(0, parseInt(element.getBoundingClientRect().height, 10), -0.5, 4, 500, (value) => {
 		//console.log(value);
-		element.style.bottom = (botm + value) + "px"; 
+		element.style.bottom = (botm + value) + "px";
 		//console.log((botm + value) + "px");
 		element.reload();
 	});
-	console.log("body removed");
-	if (element) { element.remove(); }
-}
+	
+	if (document.getElementById(element.footerId)) { document.getElementById(element.footerId).remove(); }
+	element.remove();
+}	
 
+async function updateBody(element) {
+	console.log("updating body");
+	let content = element.content
+//	console.log(content.textContent);
+	let lastChild = content.lastChild;
+	
+	//remove out of sight elements
+	while (parseInt(lastChild.getBoundingClientRect().top) > parseInt(element.getBoundingClientRect().height) + 50) {
+		//console.log(parseInt(lastChild.getBoundingClientRect().top) + "  " + parseInt(element.getBoundingClientRect().height));
+	//	console.log(lastChild);
+		lastChild.remove();
+		lastChild = content.lastChild;
+	}
+	//console.log(parseInt(lastChild.getBoundingClientRect().top) + "  " + parseInt(element.getBoundingClientRect().bottom));
+
+	let last = taglessLength(content);
+	let now = last;
+	let change = 0;
+	let sum = 0;
+	const len = last;
+	//console.log(len);
+	//console.log(lastChild);
+	//console.log("this child has " + lastChild.textContent.length + " chars");
+	
+	//console.log(HTMLsnip(content.lastChild, 20));
+
+	//animate removal
+
+	await interpolate(0, 1, 0, 0, 5000, (value) => {
+		//console.log(1-value);
+		while ((1 - value) * len < taglessLength(content)) {
+			//console.log(taglessLength(content));
+			change = taglessLength(content) - Math.floor((1 - value) * len);
+			HTMLsnip(content, change)
+		}
+	});	
+	return;
+}
