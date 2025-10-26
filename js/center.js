@@ -17,3 +17,8 @@ function removeCenter(element) {
 	if (element) { element.remove(); }
 }
 
+async function updateCenter(element) {
+	console.log("updating center");
+	return;
+}
+

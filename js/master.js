@@ -13,7 +13,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         //} //catch(err) {
           //      console.error("Loading error :(");
           //      const test = document.createElement("div"); 
-          //      test.innerHTML = "404";
+          //      test.innerHTML = "404", 16;
           //      container.appendChild(test);
        // }
 });
@@ -84,25 +84,43 @@ function updatePage(container, data) { //for swapping out JSONs, not general upd
 			}
 		} 
 	}
+	let complementTop = new Map();
+	for (const [id, type] of complement) {
+		for (const child of container.children) {
+			if (id == child.id) {
+				complementTop.set(id, type);
+			}
+		}
+	}
 	console.log(intersection);
 	console.log("Elements to be removed");
 	console.log(complement);
+	console.log("Top children to be removed");
+	console.log(complementTop)
 	console.log("Fresh elements to add");
 	console.log(toAdd);
 	
 	console.log("Removing undesired elements..");
-	for (const [id, type] of complement) {
-		const elem = document.getElementById(id.toString(16))
+	for (const [id, type] of complementTop) {
+		const elem = document.getElementById(id)
 		if (supportedFuctions[type]) {
 			//console.log(type);
 			removalFunctions[type](elem);
+		}
+	}
+
+	console.log("Updating elements..");
+	for (const [id, type] of intersection) {
+		const elem = document.getElementById(id)
+		if (supportedFuctions[type]) {
+			updateFunctions[type](elem);
 		}
 	} 
 }
 
 function JSONrecurse(data, map) {
 	if (!data) return map;
-	if (data.id && data.id != "0" && data.id != 0) { map.set(parseInt(data.id,16).toString(16), data["type"]); }
+	if (data.id && data.id != "0" && data.id != 0) { map.set(parseInt(data.id, 16), data["type"]); }
 	if (Array.isArray(data.content)){
 		data.content.forEach(child => JSONrecurse(child, map));
 	}

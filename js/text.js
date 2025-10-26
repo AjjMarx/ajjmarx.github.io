@@ -17,3 +17,8 @@ function removeText(element) {
 	if (element) { element.remove(); }
 }
 
+async function updateText(element) {
+	console.log("updating text");
+	return;
+}
+

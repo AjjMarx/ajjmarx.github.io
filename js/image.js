@@ -33,3 +33,8 @@ function removeImg(element) {
 	if (element) { element.remove(); }
 }
 
+async function updateImg(element) {
+	console.log("updating image");
+	return;
+}
+

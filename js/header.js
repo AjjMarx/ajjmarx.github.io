@@ -41,3 +41,9 @@ function addHeader(container, data, name) {
 function removeHeader(element) {
 	if (element) { element.remove(); }
 }
+
+async function updateHeader(element) {
+	console.log("updating header");
+	return;
+}
+

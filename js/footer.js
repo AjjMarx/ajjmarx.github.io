@@ -6,3 +6,8 @@ function removeFooter(element) {
 	if (element) { element.remove(); }
 }
 
+async function updateFooter(element) {
+	console.log("updating footer");
+	return;
+}
+

@@ -27,7 +27,7 @@ function addPageStack(container, data, name) {
 		const pg = document.createElement("special-div");
 		//pg.style.backgroundColor = "blue";
 		pg.id = assignName(0);
-		typeHash.set(pg.id, "Page Stack Element");
+		typeHash.set(parseInt(pg.id, 16), "Page Stack Element");
 		pg.style.position = "absolute";
 		pg.style.width = (wideWidth - 14) + "px";
 		pg.style.left = "14px";
@@ -56,5 +56,10 @@ function addPageStack(container, data, name) {
 
 function removePageStack(element) {
 	if (element) { element.remove(); }
+}
+
+async function updatePageStack(element) {
+	console.log("updating page stack");
+	return;
 }
 

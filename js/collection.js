@@ -21,7 +21,7 @@ const spawnFunctions = {
         "toggle"   : addToggle,
 	"footer"   : addFooter
 }
-/*to be added
+
 const updateFunctions = {
         "header"   : updateHeader,
         "pageStack": updatePageStack,
@@ -33,7 +33,7 @@ const updateFunctions = {
         "toggle"   : updateToggle,
 	"footer"   : updateFooter
 }
-*/
+
 const removalFunctions = {
         "header"   : removeHeader,
         "pageStack": removePageStack,
