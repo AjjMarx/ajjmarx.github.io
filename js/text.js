@@ -13,4 +13,7 @@ function addText(container, data, name) {
         return text;
 }
 
+function removeText(element) {
+	if (element) { element.remove(); }
+}
 

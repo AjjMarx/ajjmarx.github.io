@@ -29,4 +29,7 @@ function addImg(container, data, name) {
 	});
 }
 
+function removeImg(element) {
+	if (element) { element.remove(); }
+}
 

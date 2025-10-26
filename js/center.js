@@ -13,4 +13,7 @@ function addCenter(container, data, name) {
 	}
 }
 
+function removeCenter(element) {
+	if (element) { element.remove(); }
+}
 

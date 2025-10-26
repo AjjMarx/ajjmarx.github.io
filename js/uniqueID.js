@@ -5,7 +5,7 @@ function uniqueID() {
 }
 
 function assignName(name) {
-	if (!name || name == "0" || name == 0 || name == "0x0") { return uniqueID(); }
-	if (typeof(name) == "number") { return name; }
-	return parseInt(name,16);
+	if (!name || name == "0" || name == 0 || name == "0x0") { return uniqueID().toString(16); }
+	if (typeof(name) == "number") { return name.toString(16); }
+	return name;
 }

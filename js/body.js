@@ -28,6 +28,7 @@ function addBody(container, data, name) {
 			body.reload();
 			const footer = document.createElement("div");
 			footer.id = assignName(item.id);
+			typeHash.set(footer.id, "footer");
 			container.appendChild(footer);
 			footer.style.position = "absolute";
 			if (parseInt(container.offsetWidth, 10) >= 1000) {
@@ -52,11 +53,11 @@ function addBody(container, data, name) {
 				}
 			});	
 
-			for (const footer_item of item["data"]) {
-                		spawnFunctions[footer_item["type"]](footer, footer_item["data"], footer_item.id);	
-			}
+			generateChildren(footer, item["data"]);
 		} else {
-			spawnFunctions[item["type"]](body, item["data"], item.id);  
+			const id = assignName(item.id);
+			typeHash.set(id, item["type"]);
+			spawnFunctions[item["type"]](body, item["data"], id);  
 		}
         }       
         window.addEventListener("resize", () => {
@@ -73,4 +74,9 @@ function addBody(container, data, name) {
 	//console.log("done rendering body");
 }
 
+function removeBody(element) {
+	console.log(element);
+	if (element) { element.remove(); }
+	console.log("body removed");
+}
 

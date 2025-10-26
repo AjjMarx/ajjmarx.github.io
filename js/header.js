@@ -38,3 +38,6 @@ function addHeader(container, data, name) {
         return header;
 }
 
+function removeHeader(element) {
+	if (element) { element.remove(); }
+}

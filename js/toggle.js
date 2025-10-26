@@ -3,4 +3,7 @@ function addToggle(container, data, name) {
 	
 }
 
+function removeToggle(element) {
+	if (element) { element.remove(); }
+}
 

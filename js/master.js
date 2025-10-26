@@ -1,3 +1,5 @@
+let typeHash = new Map();
+
 window.addEventListener("DOMContentLoaded", async () => {
         const app = document.getElementById("app");
 	customElements.define('special-div', SpecialDiv);
@@ -6,7 +8,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 	//try {
                 const res = await fetch(filePath);
                 const data = await res.json();
-
+	
                 renderPage(app, data);
         //} //catch(err) {
           //      console.error("Loading error :(");
@@ -21,8 +23,6 @@ window.addEventListener("hashchange", async() => {
 	const app = document.getElementById("app");
 	const res = await fetch(findPageFileName(path));
 	const data = await res.json();
-	//console.log(typeof(app.innerHTML));
-	//app.innerHTML = "";
 	updatePage(app, data);
 });
 
@@ -33,38 +33,25 @@ function findPageFileName(name) {
         return "pages" + name + ".json";
 }
 
+function generateChildren(container, content) {
+	for (const item of content) {
+		const id = assignName(item.id);
+		typeHash.set(id, item["type"]);
+		spawnFunctions[item["type"]](container, item["data"], id);
+	}
+}
+
 horizontalElements = 0
 
 function renderPage(container, data) {
-//        const test = document.createElement("div");
-//        test.innerHTML = findPageFileName(window.location.pathname);
-//        container.appendChild(test);	
 	console.log(findPageFileName(window.location.hash.slice(1)));
-	
-        for (const key of Object.keys(data)) {
-                //console.log(key);
-        }
-
-        for (const key of Object.keys(data.meta)) {
-                //console.log(key, data.meta[key]);
-        }
 
 	for (const item of data.content) {
 		if(item["type"] == "header" || item["type"] == "pageStack") {
 			horizontalElements++;	
 		}
 	}
-	//console.log(horizontalElements);
-
-        for (const item of data.content) {
-                //console.log(item);
-                //for (const key of Object.keys(item)) {
-                //        console.log(key, item[key]);
-                //}
-                spawnFunctions[item["type"]](container, item["data"], item.id);
-        }
-
-	//console.log(window.location.pathname);
+        generateChildren(container, data.content);
 }
 
 function updatePage(container, data) { //for swapping out JSONs, not general updates, I just use DOM for that
@@ -73,48 +60,55 @@ function updatePage(container, data) { //for swapping out JSONs, not general upd
 //Fade out originals with no match
 //Fade in any new elements with no match
 	//console.log(container);
-	specialDivs = Array.from(container.getElementsByTagName('special-div'));
-	normalDivs = specialDivs.concat(Array.from(container.getElementsByTagName('div')));
-	const divs = normalDivs.concat(Array.from(container.getElementsByTagName('img')));
 	console.log("Locating live elements in container that have valid IDs");
-	let oldHTML = [];
-	for (const elm of divs) {
-		if (elm.id && elm.id != "0" && elm.id != 0) { //console.log(parseInt(elm.id).toString(16)); }
-			oldHTML.push(parseInt(elm.id));
-		}
-	}
+	const oldHTML = new Map(typeHash);
 	console.log(oldHTML);
 	console.log("Locating elements in " + findPageFileName(window.location.hash.slice(1)) + " with valid IDs");
 	
-	let newJSON = [];
+	let newJSON = new Map();
 	JSONrecurse(data, newJSON);
 	console.log(newJSON);
 
 	//Given how small these arrays are it makes most sense to just do a number of linear searches
 	console.log("Shared elements:");
-	let intersection = [];
-	for (const HTMLnum of oldHTML) {
-		for(const JSONnum of newJSON) {
-			if (HTMLnum == JSONnum) {
-				intersection.push(HTMLnum);
-				//oldHTML.splice(oldHTML.indexOf(HTMLnum), 1);
-				//newJSON.splice(newJSON.indexOf(JSONnum), 1);
+	let intersection = new Map();
+	let complement = new Map(oldHTML);
+	let toAdd = new Map(newJSON);
+	for (const [HTMLid, HTMLtype] of oldHTML) {
+		for(const [JSONid, JSONtype] of newJSON) {
+			if (HTMLid == JSONid && HTMLtype == JSONtype) {
+				intersection.set(HTMLid, HTMLtype);
+				complement.delete(HTMLid);
+				toAdd.delete(JSONid);
 				break;
 			}
 		} 
 	}
 	console.log(intersection);
+	console.log("Elements to be removed");
+	console.log(complement);
+	console.log("Fresh elements to add");
+	console.log(toAdd);
+	
+	console.log("Removing undesired elements..");
+	for (const [id, type] of complement) {
+		const elem = document.getElementById(id.toString(16))
+		if (supportedFuctions[type]) {
+			console.log(type);
+			removalFunctions[type](elem);
+		}
+	} 
 }
 
-function JSONrecurse(data, arr) {
-	if (!data) return arr;
-	if (data.id && data.id != "0" && data.id != 0) { arr.push(parseInt(data.id,16)); }
+function JSONrecurse(data, map) {
+	if (!data) return map;
+	if (data.id && data.id != "0" && data.id != 0) { map.set(parseInt(data.id,16).toString(16), data["type"]); }
 	if (Array.isArray(data.content)){
-		data.content.forEach(child => JSONrecurse(child, arr));
+		data.content.forEach(child => JSONrecurse(child, map));
 	}
 	if (Array.isArray(data.data)){
-		data.data.forEach(child => JSONrecurse(child, arr));
+		data.data.forEach(child => JSONrecurse(child, map));
 	}
-	return arr
+	return map
 }
 

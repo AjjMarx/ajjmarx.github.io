@@ -1,3 +1,15 @@
+const supportedFuctions = {
+        "header"   : true,
+        "pageStack": true,
+        "body"     : true,
+        "text"     : true,
+        "center"   : true,
+        "icon"     : true,
+        "img"      : true,
+        "toggle"   : true,
+	"footer"   : true
+}
+
 const spawnFunctions = {
         "header"   : addHeader,
         "pageStack": addPageStack,
@@ -21,7 +33,7 @@ const updateFunctions = {
         "toggle"   : updateToggle,
 	"footer"   : updateFooter
 }
-
+*/
 const removalFunctions = {
         "header"   : removeHeader,
         "pageStack": removePageStack,
@@ -32,7 +44,7 @@ const removalFunctions = {
         "img"      : removeImg,
         "toggle"   : removeToggle,
 	"footer"   : removeFooter
-}*/
+}
 
 
 
