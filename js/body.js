@@ -118,14 +118,13 @@ async function updateBody(element) {
 	//console.log(HTMLsnip(content.lastChild, 20));
 
 	//animate removal
-
-	await interpolate(0, 1, 0, 0, 5000, (value) => {
-		//console.log(1-value);
+	await interpolate(0, 1, 0, 0, 1000, (value) => {
 		while ((1 - value) * len < taglessLength(content)) {
-			//console.log(taglessLength(content));
 			change = taglessLength(content) - Math.floor((1 - value) * len);
 			HTMLsnip(content, change)
+			console.log("c");
 		}
-	});	
+	});
+	//console.log(taglessLength(content));	
 	return;
 }

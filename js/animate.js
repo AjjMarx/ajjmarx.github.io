@@ -13,7 +13,6 @@ function interpolate(start, target, Aslope, Bslope, mili, onUpdate) {
 	const mid = st + (corr/2) * M*M + Aslope*M + (corr/2) * M*M - (corr*mili + Bslope)*M
 	
 	let value = st;
-//	console.log(st + " " + tg + " " +M + " " + mid + " " + corr);
 
 	function step(time) {
 		let secant = time - startTime;
@@ -21,14 +20,9 @@ function interpolate(start, target, Aslope, Bslope, mili, onUpdate) {
 			
 			if (secant < M) {
 				value = st + corr/2 * secant*secant + Aslope*secant; 
-//				console.log(Math.floor(secant) + " a" + M + "  " + value);
-				//console.log(st + corr/2 * secant*secant + Aslope*secant);
 			} else {
 				value = mid - (corr/2) * secant*secant + (corr*mili + Bslope) * secant;
-//				console.log(Math.floor(secant) + ' d'+ M + "  " + value);
-				//console.log((-corr/2) * secant*secant + (corr*mili + Bslope) * secant); 
 			}
-			//if (updateFunc) { updateFunc() };
 			onUpdate(value);
 			requestAnimationFrame(step);
 		} else {
@@ -42,17 +36,13 @@ function interpolate(start, target, Aslope, Bslope, mili, onUpdate) {
 }
 
 function HTMLsnip(HTML, length) { //HTML only
-	//console.log(HTML.innerHTML);
-	//let text = HTML.innerHTML;
 	let iter = HTML.innerHTML.length-1;
 	let InTag = false;
 	let tally = Math.max(0, Math.min(HTML.innerHTML.length, length));
 	while (iter != 0 && tally > 0) {
-		//console.log(iter + " " + tally);
 		if (HTML.innerHTML[iter] == '>') { InTag = true; }
 		if (!InTag) {  
 			tally--; 
-			//console.log(HTML.innerHTML[iter] + " : " + tally);
 			HTML.innerHTML = HTML.innerHTML.slice(0, iter) + HTML.innerHTML.slice(iter + 1);
 		}
 		if (HTML.innerHTML[iter] == '<') { InTag = false; }		
@@ -61,28 +51,61 @@ function HTMLsnip(HTML, length) { //HTML only
 	}
 
 	//now clean up
-	iter = 0;
-	let currentTag = "";
-	let lastTag = "";
-	InTag = false
-	while (iter != HTML.innerHTML.length-1) {
-		if (HTML.innerHTML[iter] == '<') { InTag = true; }
-		if (InTag) { currentTag += HTML.innerHTML[iter]; }
-		if (HTML.innerHTML[iter] == '>') { 
-			InTag = false;
-			console.log(lastTag + "  " + currentTag);
-			lastTag = currentTag; 
-			currentTag = ""; 
-		}
-		iter++;
-	} 
+
+	let repeat = true;
+	let ids = new Map();
+	while (repeat) {
+		repeat = false;
+		iter = 0;
+		let last4 = "";
+		let currentTag = "";
+		let lastTag = "";
+		let distance = 0;
+		InTag = false
+		while (iter < HTML.innerHTML.length) {
+			if (HTML.innerHTML[iter] == '<') { InTag = true; }
+			if (InTag) { currentTag += HTML.innerHTML[iter]; }
+			else { distance++; }
+			if (HTML.innerHTML[iter] == '>') { 
+				InTag = false;
+				if (lastTag.slice(1) == currentTag.slice(2) && distance == 0) { 
+					HTML.innerHTML = HTML.innerHTML.slice(0, iter - currentTag.length - lastTag.length) + HTML.innerHTML.slice(iter);
+					repeat = true;
+				}
+				if (lastTag == "<br>" && distance == 0) {
+					HTML.innerHTML = HTML.innerHTML.slice(0, iter - currentTag.length - lastTag.length + 1) + HTML.innerHTML.slice(iter - currentTag.length + 1);
+				}
+				if (lastTag.indexOf("id=\"") != -1 && 
+				    (lastTag.slice(1, 4) == currentTag.slice(2,5)) && 
+				    distance == 0) {
+					let it = lastTag.indexOf("id=\"");
+					let index = HTML.innerHTML.slice(it + 4,  it+ 10);
+					index = index.slice(0, index.indexOf('\"'));
+					let toRemove = document.getElementById(index);
+					if (toRemove && toRemove.innerHTML == "") { 
+				//		console.log("div or img to remove: " + index );
+				//		console.log(toRemove);
+						toRemove.remove();
+				//		console.log("removed"); 
+					}
+				}
+				//console.log("a"); 
+				lastTag = currentTag;
+				distance = 0;
+				currentTag = "";
+			}
+			iter++;
+		} 
+	}
+//	console.log(HTML.innerHTML);
+	//console.log(ids);
 }
 
 function taglessLength(HTML) {
 	let iter = HTML.innerHTML.length - 1;
 	let InTag = false;
 	let tally = 0;
-	while (iter != 0) {
+	while (iter > 0) {
 		if (HTML.innerHTML[iter] == '>') { InTag = true; }
 		if (!InTag) { tally++; }
 		if (HTML.innerHTML[iter] == '<') { InTag = false; }		
