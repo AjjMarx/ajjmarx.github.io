@@ -118,11 +118,22 @@ async function updateBody(element) {
 	//console.log(HTMLsnip(content.lastChild, 20));
 
 	//animate removal
-	await interpolate(0, 1, 0, 0, 1000, (value) => {
-		while ((1 - value) * len < taglessLength(content)) {
+	await interpolate(0, 1, 0, 0, 5000, (value) => {
+		let i = 0;
+		while ((1 - value) * len < taglessLength(content) || i > 3) {
 			change = taglessLength(content) - Math.floor((1 - value) * len);
-			HTMLsnip(content, change)
-			console.log("c");
+			let index = HTMLsnip(content, change);
+			let toRemove = document.getElementById(index);
+			if (toRemove) { 
+					console.log(toRemove.style.width);
+				if (supportedFuctions[toRemove.nodeName.toLowerCase()] && statusHash.get(index) != "removing") {
+					removalFunctions[toRemove.nodeName.toLowerCase()](index);
+				} else if (statusHash.get(index) != "removing") { toRemove.remove(); }
+			} 
+			//	console.log("in"); 
+			//} //else if (toRemove) { toRemove.remove(); }
+			i++;	
+	//		console.log("c");
 		}
 	});
 	//console.log(taglessLength(content));	

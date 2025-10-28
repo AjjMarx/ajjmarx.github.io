@@ -1,4 +1,5 @@
 let typeHash = new Map();
+let statusHash = new Map();
 
 window.addEventListener("DOMContentLoaded", async () => {
         const app = document.getElementById("app");

@@ -51,54 +51,42 @@ function HTMLsnip(HTML, length) { //HTML only
 	}
 
 	//now clean up
-
 	let repeat = true;
 	let ids = new Map();
-	while (repeat) {
 		repeat = false;
-		iter = 0;
-		let last4 = "";
+		iter = HTML.innerHTML.length - 1;
 		let currentTag = "";
 		let lastTag = "";
 		let distance = 0;
+		let followingText = 0;
 		InTag = false
-		while (iter < HTML.innerHTML.length) {
-			if (HTML.innerHTML[iter] == '<') { InTag = true; }
-			if (InTag) { currentTag += HTML.innerHTML[iter]; }
-			else { distance++; }
-			if (HTML.innerHTML[iter] == '>') { 
+		while (iter > 0) {
+			if (HTML.innerHTML[iter] == '>') { InTag = true; }
+			if (InTag) { currentTag = HTML.innerHTML[iter] + currentTag; }
+			else { distance++; followingText++;}
+			if (HTML.innerHTML[iter] == '<') {
 				InTag = false;
-				if (lastTag.slice(1) == currentTag.slice(2) && distance == 0) { 
-					HTML.innerHTML = HTML.innerHTML.slice(0, iter - currentTag.length - lastTag.length) + HTML.innerHTML.slice(iter);
-					repeat = true;
+				if (lastTag.slice(2) == currentTag.slice(1) && distance == 0) { 
+					HTML.innerHTML = HTML.innerHTML.slice(0, iter) + HTML.innerHTML.slice(iter + currentTag.length + lastTag.length);
 				}
 				if (lastTag == "<br>" && distance == 0) {
-					HTML.innerHTML = HTML.innerHTML.slice(0, iter - currentTag.length - lastTag.length + 1) + HTML.innerHTML.slice(iter - currentTag.length + 1);
+					HTML.innerHTML = HTML.innerHTML.slice(0, iter + currentTag.length ) + HTML.innerHTML.slice(iter + currentTag.length + lastTag.length);
 				}
+				
 				if (lastTag.indexOf("id=\"") != -1 && 
-				    (lastTag.slice(1, 4) == currentTag.slice(2,5)) && 
-				    distance == 0) {
+				    followingText == 0) {
 					let it = lastTag.indexOf("id=\"");
-					let index = HTML.innerHTML.slice(it + 4,  it+ 10);
+					let index = lastTag.slice(it + 4,  it+ 15);
 					index = index.slice(0, index.indexOf('\"'));
-					let toRemove = document.getElementById(index);
-					if (toRemove && toRemove.innerHTML == "") { 
-				//		console.log("div or img to remove: " + index );
-				//		console.log(toRemove);
-						toRemove.remove();
-				//		console.log("removed"); 
-					}
+					return index;
 				}
-				//console.log("a"); 
 				lastTag = currentTag;
 				distance = 0;
 				currentTag = "";
 			}
-			iter++;
+			iter--;
 		} 
-	}
-//	console.log(HTML.innerHTML);
-	//console.log(ids);
+	return null;
 }
 
 function taglessLength(HTML) {
