@@ -36,57 +36,28 @@ function interpolate(start, target, Aslope, Bslope, mili, onUpdate) {
 }
 
 function HTMLsnip(HTML, length) { //HTML only
-	let iter = HTML.innerHTML.length-1;
-	let InTag = false;
-	let tally = Math.max(0, Math.min(HTML.innerHTML.length, length));
-	while (iter != 0 && tally > 0) {
-		if (HTML.innerHTML[iter] == '>') { InTag = true; }
-		if (!InTag) {  
-			tally--; 
-			HTML.innerHTML = HTML.innerHTML.slice(0, iter) + HTML.innerHTML.slice(iter + 1);
-		}
-		if (HTML.innerHTML[iter] == '<') { InTag = false; }		
-		iter--;
-		if (tally < 1) { break; }
-	}
+	let node = deepest(HTML);
+	let ticker = length;
 
-	//now clean up
-	let repeat = true;
-	let ids = new Map();
-		repeat = false;
-		iter = HTML.innerHTML.length - 1;
-		let currentTag = "";
-		let lastTag = "";
-		let distance = 0;
-		let followingText = 0;
-		InTag = false
-		while (iter > 0) {
-			if (HTML.innerHTML[iter] == '>') { InTag = true; }
-			if (InTag) { currentTag = HTML.innerHTML[iter] + currentTag; }
-			else { distance++; followingText++;}
-			if (HTML.innerHTML[iter] == '<') {
-				InTag = false;
-				if (lastTag.slice(2) == currentTag.slice(1) && distance == 0) { 
-					HTML.innerHTML = HTML.innerHTML.slice(0, iter) + HTML.innerHTML.slice(iter + currentTag.length + lastTag.length);
-				}
-				if (lastTag == "<br>" && distance == 0) {
-					HTML.innerHTML = HTML.innerHTML.slice(0, iter + currentTag.length ) + HTML.innerHTML.slice(iter + currentTag.length + lastTag.length);
-				}
-				
-				if (lastTag.indexOf("id=\"") != -1 && 
-				    followingText == 0) {
-					let it = lastTag.indexOf("id=\"");
-					let index = lastTag.slice(it + 4,  it+ 15);
-					index = index.slice(0, index.indexOf('\"'));
-					return index;
-				}
-				lastTag = currentTag;
-				distance = 0;
-				currentTag = "";
+	while (ticker > 0) {
+		console.log(node.textContent.length + " "+ length);
+		console.log(node.nodeType + "  " + node.textContent);
+		if (node.nodeType === Node.TEXT_NODE || node.nodeType === Node.ELEMENT_NODE) {
+			if (node.textContent.length <= length) {
+				node.remove();
+				ticker -= node.textContent.length;	
+			} else {
+				node.textContent = node.textContent.substring(0, node.textContent.length - length); 
+				ticker = 0;	
 			}
-			iter--;
-		} 
-	return null;
+		} else if (node.tagName == 'BR' || node.tagName == 'IMG') {
+			node.remove();
+		} else { node.remove(); }
+		node = deepest(HTML)
+		ticker--;
+	}
+	//console.log(node);
+	//return null;
 }
 
 function taglessLength(HTML) {
@@ -100,4 +71,12 @@ function taglessLength(HTML) {
 		iter--;
 	} 
 	return tally
+}
+
+function deepest(HTML) {
+	let cpy = HTML
+	while (cpy && cpy.lastElementChild) {
+		cpy = cpy.lastChild;
+	}
+	return cpy;
 }

@@ -94,48 +94,31 @@ async function removeBody(element) {
 async function updateBody(element) {
 	console.log("updating body");
 	let content = element.content
-//	console.log(content.textContent);
 	let lastChild = content.lastChild;
 	
 	//remove out of sight elements
 	while (parseInt(lastChild.getBoundingClientRect().top) > parseInt(element.getBoundingClientRect().height) + 50) {
-		//console.log(parseInt(lastChild.getBoundingClientRect().top) + "  " + parseInt(element.getBoundingClientRect().height));
-	//	console.log(lastChild);
 		lastChild.remove();
 		lastChild = content.lastChild;
 	}
-	//console.log(parseInt(lastChild.getBoundingClientRect().top) + "  " + parseInt(element.getBoundingClientRect().bottom));
 
 	let last = taglessLength(content);
 	let now = last;
 	let change = 0;
 	let sum = 0;
 	const len = last;
-	//console.log(len);
-	//console.log(lastChild);
-	//console.log("this child has " + lastChild.textContent.length + " chars");
-	
-	//console.log(HTMLsnip(content.lastChild, 20));
 
 	//animate removal
+
 	await interpolate(0, 1, 0, 0, 5000, (value) => {
 		let i = 0;
-		while ((1 - value) * len < taglessLength(content) || i > 3) {
+		while ((1 - value) * len < taglessLength(content) && i < 3) {
 			change = taglessLength(content) - Math.floor((1 - value) * len);
 			let index = HTMLsnip(content, change);
-			let toRemove = document.getElementById(index);
-			if (toRemove) { 
-					console.log(toRemove.style.width);
-				if (supportedFuctions[toRemove.nodeName.toLowerCase()] && statusHash.get(index) != "removing") {
-					removalFunctions[toRemove.nodeName.toLowerCase()](index);
-				} else if (statusHash.get(index) != "removing") { toRemove.remove(); }
-			} 
-			//	console.log("in"); 
-			//} //else if (toRemove) { toRemove.remove(); }
+			//console.log((1 - value) * len + " " + taglessLength(content));
 			i++;	
-	//		console.log("c");
 		}
 	});
-	//console.log(taglessLength(content));	
+	//HTMLsnip(content, 10);
 	return;
 }
