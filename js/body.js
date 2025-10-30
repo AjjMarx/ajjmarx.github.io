@@ -94,12 +94,13 @@ async function removeBody(element) {
 async function updateBody(element) {
 	console.log("updating body");
 	let content = element.content
-	let lastChild = content.lastChild;
-	
+	let lastChild = deepest(content, (element) => { return (element && typeof element.getBoundingClientRect === "function"); });
+	console.log(lastChild);	
+	console.log((lastChild && typeof lastChild.getBoundingClientRect === "function"));
 	//remove out of sight elements
 	while (parseInt(lastChild.getBoundingClientRect().top) > parseInt(element.getBoundingClientRect().height) + 50) {
 		lastChild.remove();
-		lastChild = content.lastChild;
+		lastChild = deepest(content, (element) => { return (element && typeof element.getBoundingClientRect === "function"); });
 	}
 
 	let last = taglessLength(content);
@@ -110,15 +111,18 @@ async function updateBody(element) {
 
 	//animate removal
 
-	await interpolate(0, 1, 0, 0, 5000, (value) => {
+	async function update(value) {
 		let i = 0;
 		while ((1 - value) * len < taglessLength(content) && i < 3) {
 			change = taglessLength(content) - Math.floor((1 - value) * len);
-			let index = HTMLsnip(content, change);
+			await HTMLsnip(content, change);
 			//console.log((1 - value) * len + " " + taglessLength(content));
 			i++;	
 		}
-	});
+	}
+
+	await interpolate(0, 1, 0, 0, 500, update);
 	//HTMLsnip(content, 10);
+
 	return;
 }

@@ -14,7 +14,7 @@ function interpolate(start, target, Aslope, Bslope, mili, onUpdate) {
 	
 	let value = st;
 
-	function step(time) {
+	async function step(time) {
 		let secant = time - startTime;
 		if (secant < mili) {   
 			
@@ -23,10 +23,10 @@ function interpolate(start, target, Aslope, Bslope, mili, onUpdate) {
 			} else {
 				value = mid - (corr/2) * secant*secant + (corr*mili + Bslope) * secant;
 			}
-			onUpdate(value);
+			await onUpdate(value);
 			requestAnimationFrame(step);
 		} else {
-			onUpdate(tg);
+			await onUpdate(tg);
 			resolve();
 		}
 	}
@@ -35,14 +35,12 @@ function interpolate(start, target, Aslope, Bslope, mili, onUpdate) {
 	});
 }
 
-function HTMLsnip(HTML, length) { //HTML only
-	let node = deepest(HTML);
+async function HTMLsnip(HTML, length) { //HTML only
+	let node = deepest(HTML, (nothing) => { return true; });
 	let ticker = length;
 
 	while (ticker > 0) {
-		console.log(node.textContent.length + " "+ length);
-		console.log(node.nodeType + "  " + node.textContent);
-		if (node.nodeType === Node.TEXT_NODE || node.nodeType === Node.ELEMENT_NODE) {
+		if ((node.nodeType === Node.TEXT_NODE || node.nodeType === Node.ELEMENT_NODE) && node.localName != 'img') {
 			if (node.textContent.length <= length) {
 				node.remove();
 				ticker -= node.textContent.length;	
@@ -50,10 +48,12 @@ function HTMLsnip(HTML, length) { //HTML only
 				node.textContent = node.textContent.substring(0, node.textContent.length - length); 
 				ticker = 0;	
 			}
-		} else if (node.tagName == 'BR' || node.tagName == 'IMG') {
-			node.remove();
-		} else { node.remove(); }
-		node = deepest(HTML)
+		} else if (true) {
+			if (node.id && supportedFuctions[node.localName]) {
+				await removalFunctions[node.localName](node.id);
+			} else { node.remove(); }
+		} 
+		node = deepest(HTML, (nothing) => { return true; })
 		ticker--;
 	}
 	//console.log(node);
@@ -73,9 +73,9 @@ function taglessLength(HTML) {
 	return tally
 }
 
-function deepest(HTML) {
+function deepest(HTML, condition) {
 	let cpy = HTML
-	while (cpy && cpy.lastElementChild) {
+	while (cpy && cpy.lastElementChild && condition(cpy.lastChild) === true) {
 		cpy = cpy.lastChild;
 	}
 	return cpy;

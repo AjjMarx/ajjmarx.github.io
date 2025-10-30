@@ -22,13 +22,6 @@
                 }}
         ], "id": "a82f"},
 
-	{"type": "img", "data": {
-		"location" : "right",
-		"file": "/media/sleepy.jpeg",
-		"width": 0.33,
-		"en_hover": "a sleepy kitty",
-		"zh_hover": "一只累的小猫"
-	}},
 
         {"type": "pageStack", "priority": 1, "data":{
                 "location": "left",
