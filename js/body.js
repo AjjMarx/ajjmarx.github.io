@@ -126,6 +126,7 @@ async function updateBody(element, newContent) {
 
 	console.log(newContent)
 	let footer_allow = false;
+	let animating = true;
 	for (const item of newContent) {
                 //console.log(item);
 		if (item["type"] == "footer" && footer_allow) { 
@@ -163,8 +164,9 @@ async function updateBody(element, newContent) {
 		} else {
 			const id = assignName(item.id);
 			typeHash.set(parseInt(id, 16), item["type"]);
-			await spawnFunctions[item["type"]](body, item["data"], id, true);  
+			await spawnFunctions[item["type"]](body, item["data"], id, animating);  
 		}
+		if (content.scrollHeight > parseInt(element.getBoundingClientRect().height)) { animating = false; }
         }
 	//animate adding
 
