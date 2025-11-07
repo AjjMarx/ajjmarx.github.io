@@ -32,7 +32,7 @@ async function addText(container, data, name, isAnimated) {
 				//}
 			//	await console.log(text.innerHTML);
 			}
-			interpolate(0, 1, 0, 0, 1000, update, () => {
+			interpolate(0, 1, 0, 0, 100, update, () => {
 				//console.log(dupe.innerHTML);
 				//console.log(text.innerHTML);
 				//co/nsole.log(text.isConnected);

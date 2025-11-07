@@ -1,5 +1,5 @@
 let typeHash = new Map();
-let statusHash = new Map();
+let statusHash = new Map(); //adding, removing, updating, idle, none
 
 window.addEventListener("DOMContentLoaded", async () => {
         const app = document.getElementById("app");
@@ -19,13 +19,38 @@ window.addEventListener("DOMContentLoaded", async () => {
        // }
 });
 
-window.addEventListener("hashchange", async() => {
-	const path = window.location.hash.slice(1) || '/';
-	const app = document.getElementById("app");
-	const res = await fetch(findPageFileName(path));
-	const data = await res.json();
-	updatePage(app, data);
-});
+let updateHash = "";
+let updating = false
+async function updateRoutine(hash) {
+	console.log("Hash change");
+	if (updating) {
+		console.log("Can't load new page during an update. Logging for later");
+		updateHash = window.location.hash; 
+		return; 
+	}
+	updating = true;
+	let hashCpy = hash;
+	if (!hash) { hashCpy = window.location.hash; }
+	console.log(hashCpy);
+	try {
+		const path = hashCpy.slice(1) || '/';
+		const app = document.getElementById("app");
+		const res = await fetch(findPageFileName(path));
+		const data = await res.json();
+		await updatePage(app, data);
+	} catch (err) {
+		console.log(err.message);
+	} finally {
+		updating = false;
+		if (updateHash != "") {
+			const cpy = updateHash;
+			updateHash = "";
+			await updateRoutine(cpy);
+		}
+	}
+}
+
+window.addEventListener("hashchange", () => {updateRoutine();});
 
 function findPageFileName(name) {
         if(name == "/") {
@@ -55,23 +80,12 @@ function renderPage(container, data) {
         generateChildren(container, data.content);
 }
 
-function updatePage(container, data) { //for swapping out JSONs, not general updates, I just use DOM for that
-//Start by matching up trees by ID, 
-//Matching nodes get transition animations
-//Fade out originals with no match
-//Fade in any new elements with no match
-	//console.log(container);
-	console.log("Locating live elements in container that have valid IDs");
+async function updatePage(container, data) { //for swapping out JSONs, not general updates, I just use DOM for that
+	return new Promise(async (resolve, reject) => {
 	const oldHTML = new Map(typeHash);
-	console.log(oldHTML);
-	console.log("Locating elements in " + findPageFileName(window.location.hash.slice(1)) + " with valid IDs");
-	
 	let newJSON = new Map();
 	JSONrecurse(data, newJSON);
-	console.log(newJSON);
 
-	//Given how small these arrays are it makes most sense to just do a number of linear searches
-	console.log("Shared elements:");
 	let intersection = new Map();
 	let complement = new Map(oldHTML);
 	let toAdd = new Map(newJSON);
@@ -93,33 +107,28 @@ function updatePage(container, data) { //for swapping out JSONs, not general upd
 			}
 		}
 	}
-	console.log(intersection);
-	console.log("Elements to be removed");
-	console.log(complement);
-	console.log("Top children to be removed");
-	console.log(complementTop)
-	console.log("Fresh elements to add");
-	console.log(toAdd);
 	
-	console.log("Removing undesired elements..");
 	for (const [id, type] of complementTop) {
 		const elem = document.getElementById(id)
 		if (supportedFuctions[type]) {
-			//console.log(type);
 			removalFunctions[type](elem);
 		}
 	}
 
-	console.log("Updating elements..");
-	console.log(intersection);
+	const promises = [];
 	for (const [id, type] of intersection) {
 		const elemId = document.getElementById(id)
-		console.log(type[0]);
-		if (supportedFuctions[type[0]]) {
-			console.log(elemId + " " + type[1]);
-			updateFunctions[type[0]](elemId, type[1]);
+		if (supportedFuctions[type[0]]) {	
+			promises.push( updateFunctions[type[0]](elemId, type[1]) );
 		}
-	} 
+	}
+	await Promise.all(promises);
+	
+	console.log("done");
+	resolve();
+	
+	}); 
+	//console.log(statusHash);
 }
 
 function JSONrecurse(data, map) {

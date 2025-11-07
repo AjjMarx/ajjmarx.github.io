@@ -6,7 +6,7 @@ async function addImg(container, data, name, isAnimated) {
 	img.title = data["en_hover"];
 	img.alt = data["en_hover"];
 	img.style.display = "block";
-	img.style.width = Math.min(container.offsetWidth * 0.8 * data["width"], 560) + "px";
+	img.style.width = "0px";
 	if (0.8 * container.offsetWidth * 0.8 - container.offsetWidth * 0.8 * data["width"] < 150 || data["location"] == "center") {
 		img.style.float = "none";
 		img.style.margin = "1em auto";
@@ -19,11 +19,14 @@ async function addImg(container, data, name, isAnimated) {
 
 	return new Promise((resolve, reject) => {
 		if (isAnimated) {
-			const wdth = parseInt(img.style.width);
-			interpolate(wdth, 0, 0, 0, 200, (value) => {
+			const wdth = Math.min(container.offsetWidth * 0.8 * data["width"], 560);
+			interpolate(wdth, 0, 0, 0, 50, (value) => {
 				img.style.width = Math.floor(Math.abs(wdth-value)) + "px"; 
-			}, () => { console.log("finished"); resolve(); });
-		} else { resolve(); }
+			}, () => { resolve(); });
+		} else {
+			img.style.width = Math.min(container.offsetWidth * 0.8 * data["width"], 560) + "px"; 
+			resolve(); 
+		}
 	});
 
 	window.addEventListener("resize", () => {
@@ -43,12 +46,12 @@ async function removeImg(index) {
 	if (!element) { console.log("No such image"); return; }
 	if (statusHash.get(element.id) == "removing"){ console.log("double removal being neglected"); return; }
 	
-	console.log("removing image " + element.id);
+	//console.log("removing image " + element.id);
 	statusHash.set(element.id, "removing");
 	const wdth = parseInt(element.style.width);
 	await interpolate(0, wdth, 0, 0, 50, (value) => {
 		element.style.width = Math.floor(Math.abs(wdth-value)) + "px"; 
-	}, () => {console.log("finished");});
+	}, () => { return;});
 	element.remove();
 	statusHash.set(element.id, "removed");
 }

@@ -45,7 +45,6 @@ function removeHeader(element) {
 
 async function updateHeader(element, content) {
 	console.log("updating header");
-	console.log(element.titleElement);
 	element.titleElement.content.innerHTML = content.find(item => item["type"] == "text")["data"]["all"];
 	return;
 }
