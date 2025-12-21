@@ -143,3 +143,13 @@ function JSONrecurse(data, map) {
 	return map
 }
 
+async function pathExists(path) {
+	try {
+		const res = await fetch(path, {method: 'HEAD'});
+		if (res.ok == true) { return true; }
+		return false;
+	} catch (err) {
+		console.error("File does not exist, this is expected");
+		return false;
+	}
+}
