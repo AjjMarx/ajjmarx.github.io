@@ -1,9 +1,9 @@
 {
         "meta": {
-                "en_title": "<h1>My Resume</h1>",
-                "zh_title": "<h1>我的简历</h1>",
-                "en_subtitle": "<p>One page sales pitch.</p>",
-                "zh_subtitle": "<p>一张自介绍</p>", 
+                "en_title": "My Resume",
+                "zh_title": "我的简历",
+                "en_subtitle": "One page sales pitch",
+                "zh_subtitle": "一张自介绍", 
                 "languages": ["en", "zh"]
         }
 }

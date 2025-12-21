@@ -1,9 +1,9 @@
 {
         "meta": {
-                "en_title": "<h1>My Portfolio</h1>",
-                "zh_title": "<h1>我的工程</h1>",
-                "en_subtitle": "<p>See my projects.</p>",
-                "zh_subtitle": "<p>看着我工作的东西</p>", 
+                "en_title": "My Portfolio",
+                "zh_title": "我的工程",
+                "en_subtitle": "See my projects",
+                "zh_subtitle": "看着我工作的东西", 
                 "languages": ["en", "zh"]
         }
 }

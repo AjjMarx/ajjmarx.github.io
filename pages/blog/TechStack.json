@@ -1,9 +1,9 @@
 {
         "meta": {
-                "en_title": "<h1>My Tech Stack</h1>",
-                "zh_title": "<h1>我的软件栈</h1>",
-                "en_subtitle": "<p>我必备软件。</p>",
-                "zh_subtitle": "<p></p>", 
+                "en_title": "My Tech Stack",
+                "zh_title": "我的软件栈",
+                "en_subtitle": "My most used software",
+                "zh_subtitle": "我必备软件", 
                 "languages": ["en", "zh"]
         }
 }

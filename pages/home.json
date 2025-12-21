@@ -1,10 +1,11 @@
 {
         "meta": {
-                "en_title": "<h1>root@Home_Page</h1>",
-                "zh_title": "<h1>root@家</h1>",
-                "en_subtitle": "<p>Learn about me.</p>",
-                "zh_subtitle": "<p>下认识我</p>", 
-                "languages": ["en", "zh"]
+                "en_title": "Home Page",
+                "zh_title": "家",
+                "en_subtitle": "Learn about me",
+                "zh_subtitle": "下认识我", 
+                "languages": ["en", "zh"],
+		"star" : true
         },
 
 	"content": [
@@ -26,7 +27,7 @@
                 "location": "left",
                 "en_title": "<h1>My Blog:</h1>",
                 "zh_title": "<h1>我的博客:</h1>",  
-                "directory": "blog"
+                "list": "pages/index.txt"
         }, "id": "5a11"},
 
         {"type": "body", "id": "72d8", "priority": 0, "data":[

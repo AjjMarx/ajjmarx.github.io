@@ -1,5 +1,2 @@
--TechStack.json
--Resume.json
--Portfolio.json
--Reading.json
-/posts
+&
+pages/blog/posts/post*.json
