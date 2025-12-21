@@ -1,2 +1,2 @@
 &
-pages/blog/posts/post*.json
+-pages/blog/posts/post*.json

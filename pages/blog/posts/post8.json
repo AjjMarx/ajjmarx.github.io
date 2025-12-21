@@ -1,1 +1,43 @@
+{
+        "meta": {
+                "en_title": "Post8",
+                "zh_title": "我的书单",
+                "en_subtitle": "Post 8",
+                "zh_subtitle": "...还有有些书评", 
+                "languages": ["en", "zh"],
+		"star" : true
+        },
+
+	"content": [
+
+        {"type": "header", "data":[
+                {"type": "text", "data":{"all": "<a href=\"#/\"><h1 class=\"bold\"><center>Alexa's  Blog</center></h1></a>"}},
+                {"type": "toggle", "data":{ 
+                        "location": "east",
+                        "type": "language",
+                        "dual": true,
+                        "options": [
+                                "<b>en</b>",
+                                "<zh>汉</zh>"
+                        ]
+                }}
+        ], "id": "a82f"},
+
+
+        {"type": "pageStack", "priority": 1, "data":{
+                "location": "left",
+                "en_title": "<h1>My Blog:</h1>",
+                "zh_title": "<h1>我的博客:</h1>",  
+                "list": "pages/blog/index.txt"
+        }, "id": "5a11"},
+
+        {"type": "body", "id": "72d8", "priority": 0, "data":[
+		{"type":"footer", "id": "db62", "data":[
+			{"type": "text", "data": {"all": "<center><h3>Contact: ajjmarx@umich.edu</h3></center><span class=\n"}}
+		]}
+	]}
+        ]
+}
+
+
 

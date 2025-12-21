@@ -1,5 +1,6 @@
 &
 -pages/home.json
+-pages/blog/Home.json
 -pages/blog/TechStack.json
 -pages/blog/Resume.json
 -pages/blog/Portfolio.json
