@@ -7,7 +7,8 @@ const supportedFuctions = {
         "icon"     : true,
         "img"      : true,
         "toggle"   : true,
-	"footer"   : true
+	"footer"   : true,
+	"line"     : true
 }
 
 const spawnFunctions = {
@@ -19,7 +20,8 @@ const spawnFunctions = {
         "icon"     : addIcon,
         "img"      : addImg,
         "toggle"   : addToggle,
-	"footer"   : addFooter
+	"footer"   : addFooter,
+	"line"     : addLine
 }
 
 const updateFunctions = {
@@ -31,7 +33,8 @@ const updateFunctions = {
         "icon"     : updateIcon,
         "img"      : updateImg,
         "toggle"   : updateToggle,
-	"footer"   : updateFooter
+	"footer"   : updateFooter,
+	"line"     : updateLine
 }
 
 const removalFunctions = {
@@ -43,7 +46,8 @@ const removalFunctions = {
         "icon"     : removeIcon,
         "img"      : removeImg,
         "toggle"   : removeToggle,
-	"footer"   : removeFooter
+	"footer"   : removeFooter,
+	"line"     : removeLine 
 }
 
 
