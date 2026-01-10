@@ -12,10 +12,10 @@ window.addEventListener("DOMContentLoaded", async () => {
 	
                 renderPage(app, data);
         } catch(err) {
-                console.error("Loading error :(");
+                console.error("Loading error :", err);
                 const test = document.createElement("div"); 
                 test.innerHTML = "404", 16;
-                container.appendChild(test);
+          //      container.appendChild(test);
         }
 });
 
@@ -59,11 +59,16 @@ function findPageFileName(name) {
         return "pages" + name + ".json";
 }
 
-function generateChildren(container, content, isAnimated) {
+async function generateChildren(container, content, isAnimated) {
+	console.log(isAnimated);
 	for (const item of content) {
 		const id = assignName(item.id);
 		typeHash.set(id, item["type"]);
-		spawnFunctions[item["type"]](container, item["data"], id, false, isAnimated);
+		console.log(item["type"], item["type"] in supportedFuctions);
+		if (item["type"] in supportedFuctions && supportedFuctions[item["type"]]) {
+			console.log(item["type"]);
+			await spawnFunctions[item["type"]](container, item["data"], id, isAnimated);
+		}
 	}
 }
 
@@ -118,7 +123,7 @@ async function updatePage(container, data) { //for swapping out JSONs, not gener
 	const promises = [];
 	for (const [id, type] of intersection) {
 		const elemId = document.getElementById(id)
-		if (supportedFuctions[type[0]]) {	
+		if (type[0] in supportedFuctions && supportedFuctions[type[0]]) {	
 			promises.push( updateFunctions[type[0]](elemId, type[1]) );
 		}
 	}
