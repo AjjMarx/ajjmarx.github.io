@@ -65,15 +65,9 @@ async function HTMLsnip(HTML, length) { //HTML only
 }
 
 function taglessLength(HTML) {
-	let iter = HTML.innerHTML.length - 1;
-	let InTag = false;
 	let tally = 0;
-	while (iter > 0) {
-		if (HTML.innerHTML[iter] == '>') { InTag = true; }
-		if (!InTag) { tally++; }
-		if (HTML.innerHTML[iter] == '<') { InTag = false; }		
-		iter--;
-	} 
+	tally += HTML.innerHTML.length;
+	Array.from(HTML.children).forEach((child) => {tally += taglessLength(child);});
 	return tally
 }
 
