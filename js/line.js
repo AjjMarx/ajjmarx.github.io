@@ -33,21 +33,25 @@ async function addLine(container, data, name, isAnimated) {
 	});
 }
 
-async function removeLine(index) {
-	console.log("R");
-	let element = document.getElementById(index);
-	if (!element) { console.log("No such image"); return; }
-	if (statusHash.get(element.id) == "removing"){ console.log("double removal being neglected"); return; }
-	
-	statusHash.set(element.id, "removing");
-	const wdth = parseInt(element.style.width);
-	console.log(wdth)
-	await interpolate(0, 1, 0, 0, 500, (value) => {
-		element.style.width = (value * 100) + "%";
-		element.style.left = 50*(1-value) + value*(100-wdth)/2 + "%";
-	}, () => { return;});
-	element.remove();
-	statusHash.set(element.id, "removed");
+async function removeLine(element, isAnimated) {
+	return new Promise (async (resolve, reject) => { 
+		console.log("Removing line");
+		if (!element) { console.log("No such line"); reject(); }
+		if (statusHash.get(element.id) == "removing"){ console.log("double removal being neglected"); reject(); }
+		
+		statusHash.set(element.id, "removing");
+		const wdth = parseInt(element.style.width);
+		console.log(wdth)
+		if (isAnimated) {
+			await interpolate(0, 1, 0, 0, 70, (value) => {
+				element.style.width = (100 - value * 100) + "%";
+				element.style.left = 50*(value) + (1 - value)*(100-wdth)/2 + "%";
+			}, () => {});
+		}
+		element.remove();
+		statusHash.set(element.id, "removed");
+		resolve();
+	});
 }
 
 async function updateLine(element, content) {
