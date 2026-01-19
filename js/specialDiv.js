@@ -14,11 +14,11 @@ class SpecialDiv extends HTMLElement {
 		this.appendChild(this.content);
 		this.content.style.position = "absolute";
 		this.content.style.width = "calc(100% - 6px)";
-		this.content.style.height = "calc(100% - 8px)";
-		this.content.style.top = "8px";
+		this.content.style.height = "calc(100% - 0px)";
+		this.content.style.top = "0px";
 		this.content.style.left = "4px";//"12px";
 //		this.content.style.right = "8px";
-		this.content.style.padding = "10px 10% 10px 10%";
+		this.content.style.padding = "48px 10% 48px 10%";
 		this.content.style.overflow = "auto";
 		this.content.style.textAlign = "justify";
 		this.content.style.backgroundColor = "white";
@@ -30,6 +30,9 @@ class SpecialDiv extends HTMLElement {
 		this.frame.style.width = "100%";
 		this.frame.style.height = "100%";
 		this.frame.style.pointerEvents = "none";
+
+		this.hasAbberation = false;
+		this.topAbb;
 
 		this.parentAppend = this.appendChild.bind(this);
         	this.appendChild = (child) => {
@@ -47,7 +50,10 @@ class SpecialDiv extends HTMLElement {
 
 	reload() {
 		//console.log(this.clientWidth, this.clientHeight);
+		this.frame.style.width = this.getBoundingClientRect().width + "px";
+		this.frame.style.height = this.getBoundingClientRect().height + "px";
 		this.#render_box(this.clientWidth, this.clientHeight, 24, 3, 150);
+		if (this.hasAbberation) { this.updateAbberation(); }
 	}	
 
 	#box_svg(width, height, offst, weight, left, top, color) { 	
@@ -113,5 +119,145 @@ class SpecialDiv extends HTMLElement {
 //		console.log(this.innerHTML);
 	}
 
+	toggleAbberation() {
+		this.hasAbberation = true;
+		this.topAbb = document.createElement("canvas");
+		this.topAbb.style.position = "absolute";
+		this.topAbb.style.pointerEvents = "none";
+		this.topAbb.style.display = "none";
+		
+		this.topAbb.style.top = this.frame.getBoundingClientRect().top + "px";;	
+		this.topAbb.style.left = "100%";//this.frame.getBoundingClientRect().left + "px";	
+	
+		this.parentElement.appendChild(this.topAbb);
+
+		this.filter = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+		
+		this.parentElement.appendChild(this.filter);
+
+		const tempID = uniqueID();
+
+		this.filter.innerHTML = `
+		<filter id="abberate${tempID}" x="0" y="0" width="120%" height="100%" color-interpolation-filters="sRGB">
+			<feImage 
+				id="abberate${tempID}Image"
+				color-interpolation-filters="sRGB"
+				xlink:href="media/abberate.png"
+				result="map"
+				preserveAspectRatio = "none"
+			/>
+			<feDisplacementMap  
+				in="SourceGraphic" 
+				in2="map"
+				scale="40"
+				xChannelSelector="R"
+				yChannelSelector="G"
+				result="redDisp"
+			/>		
+			<feColorMatrix in="map" result="mapNeutral" type="matrix" values = "0 0 0 0 0.5
+											    0 1 0 0 0	
+											    0 0 1 0 0
+											    0 0 0 1 0"/>
+			<feDisplacementMap  
+				in="SourceGraphic" 
+				in2="mapNeutral"
+				scale="40"
+				xChannelSelector="R"
+				yChannelSelector="G"
+				result="greenDisp"
+			/>
+			<feDisplacementMap  
+				in="SourceGraphic" 
+				in2="map"
+				scale="40"
+				xChannelSelector="B"
+				yChannelSelector="G"
+				result="blueDisp"
+			/>
+			<feColorMatrix in="redDisp" result="redChannel" type="matrix" values = "0.5804 0 0 0 0
+												0 0.2431 0 0 0
+												0 0 0.28235 0 0
+												0 0 0 1 0"/>
+			<feColorMatrix in="greenDisp" result="greenChannel" type="matrix" values = "0.255 0 0 0 0
+													0 0.3843 0 0 0
+													0 0 0.0980 0 0
+													0 0 0 1 0"/>
+			<feColorMatrix in="blueDisp" result="blueChannel" type="matrix" values = "0.164 0 0 0 0
+												  0 0.3725 0 0 0
+												  0 0 0.61908 0 0
+												  0 0 0 1 0"/>
+			<feComposite 
+				in="redChannel" 
+				in2="blueChannel" 
+				operator="arithmetic" 
+				k1="0" k2="1" k3="1" k4="0"
+				result="RBMix"
+			/>
+			<feComposite 
+				in="RBMix"
+				in2="greenChannel"
+				operator="arithmetic" 
+				k1="0" k2="1" k3="1" k4="0"
+			/>
+		</filter>`;
+
+	
+		this.updateAbberation();	
+		
+	}
+	
+	updateAbberation() {
+		const tempID = this.filter.firstChild.nextElementSibling.id;
+
+
+		this.topAbb.height = this.getBoundingClientRect().height + 28;
+		this.topAbb.width = this.getBoundingClientRect().width;
+		this.topAbb.style.height = this.getBoundingClientRect().height + 28 + "px";
+		this.topAbb.style.width = this.getBoundingClientRect().width + "px";
+		this.topAbb.style.top = this.frame.getBoundingClientRect().top - 16 + "px";;	
+		this.topAbb.style.left = this.frame.getBoundingClientRect().left + "px";
+		this.topAbb.style.zIndex = "100";
+		
+		let ctx = this.topAbb.getContext("2d");
+		let topTexture = document.createElement("img");
+		let botTexture = document.createElement("img");
+		topTexture.src = "media/abberate.png";
+		botTexture.src = "media/abberateB.png";
+		
+		botTexture.addEventListener("load", (e) => { 
+			ctx.fillStyle = "#7F7F7F";
+			ctx.fillRect(0, 0, 10000, this.topAbb.height);
+			ctx.fill();
+			ctx.drawImage(topTexture, 0, 20, this.topAbb.width, 20);
+			ctx.fillStyle = "#0000FF";
+			ctx.fillRect(0, 0, this.topAbb.width, 20);
+			ctx.drawImage(botTexture, 0, this.topAbb.height-40, this.topAbb.width, 20);
+			ctx.fillStyle = "#FFFF00";
+			ctx.fillRect(0, this.topAbb.height-20, this.topAbb.width, this.topAbb.height);
+			const abbURL = this.topAbb.toDataURL("image/png");
+			document.getElementById(`${tempID}Image`).setAttribute("xlink:href", abbURL);
+			this.content.style.filter = `url(#${tempID})`;
+			this.content.style.height = "calc(100% + 28px)";
+			this.content.style.top = "-10px";
+
+			ctx.clearRect(0, 0, this.topAbb.width, this.topAbb.height);
+			ctx.fillStyle = "#000000";
+			ctx.fillRect(0, 40, this.topAbb.width, this.topAbb.height - 74);
+			ctx.fillRect(22, 20, this.topAbb.width - 44, this.topAbb.height - 34);
+			ctx.beginPath();
+			ctx.arc(22, 40, 20, 0, 2 * Math.PI);
+			ctx.arc(this.topAbb.width - 22, 40, 20, 0, 2 * Math.PI);
+			ctx.arc(this.topAbb.width - 22, this.topAbb.height-34, 20, 0, 2 * Math.PI);
+			ctx.arc(22, this.topAbb.height - 34, 20, 0, 2 * Math.PI);
+			ctx.fill();
+
+			const maskURL = this.topAbb.toDataURL("image/png");
+			this.content.style.maskImage = `url(${maskURL})`;
+			this.content.style.maskRepeat = "no-repeat";
+			//this.content.style.maskPosition = "center";
+		});
+	}
+
 }
+
 
