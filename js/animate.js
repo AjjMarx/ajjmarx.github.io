@@ -37,11 +37,12 @@ function interpolate(start, target, Aslope, Bslope, mili, onUpdate, onComplete) 
 }
 
 async function HTMLsnip(HTML, length) { //HTML only
-	let node = deepest(HTML, (nothing) => { return true; });
+	let node = deepest(HTML, (x) => { return true; });
 	let ticker = length;
 
 	while (ticker > 0 && node && node != HTML) {
-		if ((node.nodeType === Node.TEXT_NODE || node.nodeType === Node.ELEMENT_NODE) && node.localName != 'img') {
+		//console.log(node.sType);
+		if ((node.nodeType === Node.TEXT_NODE || node.nodeType === Node.ELEMENT_NODE) && node.localName != 'img' && node.localName != 'svg') {
 			if (node.textContent.length <= ticker) {
 				node.remove();
 				ticker -= node.textContent.length;	
@@ -59,22 +60,17 @@ async function HTMLsnip(HTML, length) { //HTML only
 		node = deepest(HTML, (nothing) => { return true; })
 		ticker--;
 	}
-	//console.log(ticker);
-	//console.log(node);
-	//return null;
 }
 
 function taglessLength(HTML) {
 	let tally = 0;
+	//console.log(HTML);
 	tally += HTML.innerHTML.length;
 	Array.from(HTML.children).forEach((child) => {tally += taglessLength(child);});
 	return tally
 }
 
-function deepest(HTML, condition) {
-	let cpy = HTML
-	while (cpy && cpy.lastElementChild && condition(cpy.lastChild) === true) {
-		cpy = cpy.lastChild;
-	}
-	return cpy;
+function deepest(HTML) {
+	if (!HTML.hasChildNodes()) { return HTML; }
+	return deepest(HTML.lastChild);
 }
