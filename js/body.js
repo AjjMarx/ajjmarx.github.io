@@ -86,61 +86,31 @@ async function removeBody(element) {
 		element.style.bottom = (botm + value) + "px";
 		//console.log((botm + value) + "px");
 		element.reload();
-	});
+	}, () => {return true;});
 	
 	if (document.getElementById(element.footerId)) { document.getElementById(element.footerId).remove(); }
 	element.remove();
 	statusHash.set(element.id, "none");	
 }	
 
-async function updateBody(element, newContent) {
+async function updateBody(element, newContent, isAnimated) {
 	console.log("updating body");
 	statusHash.set(element.id, "updating");	
 	return new Promise(async (resolve, reject) => {	
-		let body = element;
 		let content = element.content
-		let lastChild = deepest(content, (element) => { return (element && typeof element.getBoundingClientRect === "function"); });
-		
-		//remove out of sight elements
-		while (parseInt(lastChild.getBoundingClientRect().top) > parseInt(element.getBoundingClientRect().height) + 50) {
-			lastChild.remove();
-			lastChild = deepest(content, (element) => { return (element && typeof element.getBoundingClientRect === "function"); });
-		}
-
-		let last = taglessLength(content);
-		let now = last;
-		let change = 0;
-		let sum = 0;
-		const len = last;
-
-		//animate removal
-
-		async function update(value) {
-			let i = 0;
-			while ((1 - value) * len < taglessLength(content) && i < 3) {
-			change = taglessLength(content) - Math.floor((1 - value) * len);
-				await HTMLsnip(content, change);
-				i++;
-			}	
-		}
-		
-		await interpolate(0, 1, 0, 0, 300, update, () => { return;});
-		
-		content.innerHTML = "";
-		let footer_allow = false;
-		let animating = true;
-		for (const item of newContent) {
-			//console.log(item);
-			if (item["type"] == "footer" && footer_allow) { 
-				//generateChildren(footer, item["data"]);
-			} else {
-				//const id = assignName(item.id);
-				//typeHash.set(parseInt(id, 16), item["type"]);
-				//await spawnFunctions[item["type"]](body, item["data"], id, true, true);  
+		for (child of Array.from(content.children).reverse()) {
+		//	console.log(child.id, child.localName, typeHash.get(parseInt(child.id)));
+			if (typeHash.get(parseInt(child.id)) in supportedFuctions && supportedFuctions[typeHash.get(parseInt(child.id))]) {
+		//		console.log(child);
+				if (isAnimated && child.getBoundingClientRect().top < element.getBoundingClientRect().bottom) {
+					await removalFunctions[typeHash.get(parseInt(child.id))](child, true);
+				} else {
+					await removalFunctions[typeHash.get(parseInt(child.id))](child, false);
+				}
 			}
-			if (content.scrollHeight > parseInt(element.getBoundingClientRect().height)) { animating = false; }
 		}
-		generateChildren(body, newContent, true);
+		await generateChildren(element,newContent, isAnimated)
+
 		statusHash.set(element.id, "idle");	
 		resolve();
 	});
