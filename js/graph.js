@@ -11,6 +11,7 @@ async function addGraph(container, data, name, isAnimated){
 	graph.style.top = "0px";
 	graph.style.width = "100%";
 	graph.style.height = "100%";
+	graph.style.dispay = "none";
 	
 	graphWrapper.style.aspectRatio = data["aspect_ratio"];
 	if (0.8 * container.offsetWidth * 0.8 - container.offsetWidth * 0.8 * data["width"] < 150 || data["location"] == "center") {
@@ -66,24 +67,27 @@ async function addGraph(container, data, name, isAnimated){
 		let delta = 0;
 		let x = data.x[0];
 		let loop = 0;
+		let pointCount = 0
 		let nonEmpty = false;
-		while (loop < 1000 && x < data.x[1]) {
-			if (!isNaN(evaluateFormula(x)) || evaluateFormula(x) > data.y[1] || evaluateFormula(x) < data.y[0]) { 
-				loop++;
-				temp += `${x},${evaluateFormula(x)} `;
+		while (loop < 10000 && pointCount < 2000 && x < data.x[1]) {
+			let xp = Math.trunc(x*100)/100;
+			if (!isNaN(evaluateFormula(x)) || evaluateFormula(x) > data.y[1] || evaluateFormula(x) < data.y[0]) {
+				if (evaluateFormula(xp) < data.y[1] + 1 && evaluateFormula(xp) > data.y[0] -1) {
+					temp += `${xp},${Math.trunc(evaluateFormula(xp)*100)/100} `;
+				}
+				pointCount++;
 				nonEmpty = true;
 				if (!isNaN(evaluateFormula(x+0.01))) {
-					x += 10 / Math.sqrt(Math.pow((evaluateFormula(x)+evaluateFormula(x+0.01))/0.01, 2)+ 1);
-					//console.log(1 / Math.sqrt(Math.pow((evaluateFormula(x)-evaluateFormula(x+0.01))/0.01, 2)+ 1));
-				} else { x+= 0.01; }
+					x += 0.1 / Math.sqrt(Math.pow((evaluateFormula(x)-evaluateFormula(x+0.01))/0.01, 2)+ 1);
+				} else { x += 0.01; }
 			} else if (nonEmpty) {
-				loop++;
 				temp += `" /fill="none" stroke="${col}" stroke-width="2", vector-effect="non-scaling-stroke"></polyline><polyline points="`;
 				nonEmpty = false;
 				x += 0.1;
-			} else { x += 0.01; loop += 0.1;}
+			} else { x += 0.01;}
+			loop++;
 		}
-		console.log(loop);
+		//console.log(loop);
 		temp += `" /fill="none" stroke="${col}" stroke-width="2", vector-effect="non-scaling-stroke">`;
 		vis.innerHTML += temp;
 	}
@@ -95,23 +99,26 @@ async function addGraph(container, data, name, isAnimated){
 	}
 	
 	//'<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">'
-	graph.content.appendChild(vis);
-	container.appendChild(document.createElement("br"));
+	await graph.content.appendChild(vis);
 
 	console.log(graph.content);	
 	return new Promise((resolve, reject) => {
 		if (isAnimated) {
-			const wdth = Math.min(container.offsetWidth * 0.8 * data["width"], 560);
-			interpolate(wdth, 0, 0, 0, 50, (value) => {
+			const wdth = 80 * data["width"];
+			graphWrapper.style.width = "0%";
+			graph.reload();
+			interpolate(wdth, 0, 0, 0, 70, (value) => {
 				graphWrapper.style.width = Math.floor(Math.abs(wdth-value)) + "px";
 				graph.reload(); 
 			}, () => {
+				graphWrapper.style.width = 80 * data["width"] + "%";
+				graph.style.display = "auto";
 				graph.reload(); 
 				resolve(); 
 			});
-		} else {
-		
+		} else {	
 			graphWrapper.style.width = 80 * data["width"] + "%";
+			graph.style.display = "auto";
 			graph.reload();
 			resolve(); 
 		}
@@ -121,9 +128,25 @@ async function addGraph(container, data, name, isAnimated){
 	return;
 }
 
-async function removeGraph(index) {
-	console.log("Removing graph");
-	return;
+async function removeGraph(element, isAnimated) {
+	return new Promise (async (resolve, reject) => {
+		if (!element) { console.log("No such graph"); return; }
+		if (statusHash.get(element.id) == "removing"){ console.log("double removal being neglected"); return; }
+		console.log(element);
+		//console.log("removing image " + element.id);
+		statusHash.set(element.id, "removing");
+		const wdth = parseInt(element.style.width);
+		console.log(wdth);
+		if (isAnimated) {
+			await interpolate(0, wdth, 0, 0, 100, (value) => {
+				element.style.width = Math.floor(Math.abs(wdth-value)) + "%";
+				element.firstChild.reload();
+			}, () => { return;});
+		}
+		element.remove();
+		statusHash.set(element.id, "removed");
+		resolve();
+	});
 }
 
 async function updateGraph(element, content) {
