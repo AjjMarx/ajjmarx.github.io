@@ -85,7 +85,7 @@ marginSize = {
 
 async function addIcon(container, data, name, isAnimated) {
 	return new Promise(async (resolve, reject) => {		
-		const intake = await fetch(`media/icons/${data["name"]}.svg`);
+		const intake = await fetch(`media/Icons/${data["name"]}.svg`);
 		let svgRaw = await intake.text();
 		svgRaw = svgRaw.replace(/fill:#000000/g, `fill:${data["color"]}`);
 		const parser = new DOMParser();
