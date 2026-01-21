@@ -1,6 +1,6 @@
 async function addGraph(container, data, name, isAnimated){
-	console.log("Adding graph");
-	console.log(data);
+	//console.log("Adding graph");
+	//console.log(data);
 	const graphWrapper = document.createElement("div");
 	graphWrapper.id = assignName(name);
 	graphWrapper.style.position = "relative";
@@ -101,7 +101,6 @@ async function addGraph(container, data, name, isAnimated){
 	//'<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">'
 	await graph.content.appendChild(vis);
 
-	console.log(graph.content);	
 	return new Promise((resolve, reject) => {
 		if (isAnimated) {
 			const wdth = 80 * data["width"];
@@ -132,11 +131,8 @@ async function removeGraph(element, isAnimated) {
 	return new Promise (async (resolve, reject) => {
 		if (!element) { console.log("No such graph"); return; }
 		if (statusHash.get(element.id) == "removing"){ console.log("double removal being neglected"); return; }
-		console.log(element);
-		//console.log("removing image " + element.id);
 		statusHash.set(element.id, "removing");
 		const wdth = parseInt(element.style.width);
-		console.log(wdth);
 		if (isAnimated) {
 			await interpolate(0, wdth, 0, 0, 100, (value) => {
 				element.style.width = Math.floor(Math.abs(wdth-value)) + "%";
