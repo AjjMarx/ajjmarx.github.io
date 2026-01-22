@@ -47,7 +47,7 @@
 		}},
 		{"type":"center", "data":[
                         {"type":"icon", "data":{
-                                "name": "Github",
+                                "name": "GitHub",
                                 "link": "https://github.com/AjjMarx",
 				"color": "#101010",
 				"size": "huge"
