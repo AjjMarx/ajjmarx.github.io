@@ -18,7 +18,7 @@ function addBody(container, data, name, isAnimated) {
 	body.style.padding = "4px 4px 4px 4px";
         body.style.top = "4em";
         body.style.bottom = "10px";
-	body.style.minWidth = "calc(100vh * (0.5) - 8px)";
+	body.style.minWidth = "592px";
 	body.toggleAbberation();
 	let footer_allow = true
 	body.reload();
@@ -62,16 +62,20 @@ function addBody(container, data, name, isAnimated) {
 		}
         }      
 	generateChildren(body, data, isAnimated); 
+
+	let isWide = true;
         window.addEventListener("resize", () => {
-		if (parseInt(container.offsetWidth, 10) >= 1000) {
+		if (parseInt(container.offsetWidth, 10) >= 1000 && !isWide) {
 			body.style.width = wideWidth;
 			body.style.left = wideLeft;
 			body.reload();
-		} else {
+			isWide = true;
+		} else if (parseInt(container.offsetWidth, 10) < 1000) {
 			body.style.width = narrowWidth;
 			body.style.left = narrowLeft;
 			body.reload(); 
-		}
+			isWide = false;
+		} 
 	});
 	//console.log("done rendering body");
 }
