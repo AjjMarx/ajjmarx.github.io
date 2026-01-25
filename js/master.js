@@ -88,7 +88,10 @@ async function updateRoutine(page) {
 	}
 }
 
-window.addEventListener("popstate", () => {updateRoutine();});
+window.addEventListener("popstate", (e) => {
+	e.preventDefault();
+	updateRoutine();
+});
 
 function findPageFileName(name) {
         if(name == "/") {
