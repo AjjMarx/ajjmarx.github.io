@@ -16,7 +16,7 @@ window.addEventListener("DOMContentLoaded", async () => {
                 res = await fetch(filePath);
 		if (!res.ok) {
 			console.log(filePath, "404");
-			window.location.hash = "/404";
+			window.location.pathname = "/404";
 			res = await fetch("pages/404.json");
 		}
 	} catch(err) {
@@ -39,18 +39,15 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 let updateHash = "";
 let updating = false
-async function updateRoutine(hash) {
+async function updateRoutine() {
 	console.log("URL change");
 	if (updating) {
 		console.log("Can't load new page during an update. Logging for later");
-		updateHash = window.location.pathName; 
 		return; 
 	}
 	updating = true;
-	let hashCpy = hash;
-	if (!hash) { hashCpy = window.location.pathName; }
-	console.log(hashCpy);
-	const path = hashCpy.slice(1) || '/';
+	const path = window.location.pathname;
+	console.log(window.location.pathname);
 	const app = document.getElementById("app");
 	let res;
 
