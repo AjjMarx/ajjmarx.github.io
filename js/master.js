@@ -7,7 +7,8 @@ window.addEventListener("DOMContentLoaded", async () => {
         const app = document.getElementById("app");
 	customElements.define('special-div', SpecialDiv);
 	console.log(window.location);
-	const filePath = findPageFileName(window.location.hash.slice(1));
+	console.log(window.location.pathname);
+	const filePath = findPageFileName(window.location.pathname);
         //console.log(findPageFileName(window.location.hash.slice(1)));
 	let res;
 	try {
@@ -39,15 +40,15 @@ window.addEventListener("DOMContentLoaded", async () => {
 let updateHash = "";
 let updating = false
 async function updateRoutine(hash) {
-	console.log("Hash change");
+	console.log("URL change");
 	if (updating) {
 		console.log("Can't load new page during an update. Logging for later");
-		updateHash = window.location.hash; 
+		updateHash = window.location.pathName; 
 		return; 
 	}
 	updating = true;
 	let hashCpy = hash;
-	if (!hash) { hashCpy = window.location.hash; }
+	if (!hash) { hashCpy = window.location.pathName; }
 	console.log(hashCpy);
 	const path = hashCpy.slice(1) || '/';
 	const app = document.getElementById("app");
@@ -79,7 +80,7 @@ async function updateRoutine(hash) {
 	}
 }
 
-window.addEventListener("hashchange", () => {updateRoutine();});
+window.addEventListener("popstate", () => {updateRoutine();});
 
 function findPageFileName(name) {
         if(name == "/") {
