@@ -20,6 +20,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 			console.log(filePath, "404");
 			sessionStorage.removeItem('spa_path');
 			window.history.replaceState(null, "", "/404");
+			window.history.pushState({ path: path }, "", "/404");
 			res = await fetch("pages/404.json");
 		}
 	} catch(err) {
@@ -28,6 +29,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 	sessionStorage.removeItem('spa_path');
 	window.history.replaceState(null, "", path);
+	window.history.pushState({ path: path }, "", path);
 
         const data = await res.json();
 	
@@ -64,6 +66,7 @@ async function updateRoutine(page) {
 			console.log("File does not exist");
 			sessionStorage.removeItem('spa_path');
 			window.history.replaceState(null, "", "/404");
+			window.history.pushState({ path: path }, "", "/404");
 			res = await fetch('page/404.json');
 		}
 	} catch (err){
@@ -72,6 +75,7 @@ async function updateRoutine(page) {
 	
 	sessionStorage.removeItem('spa_path');
 	window.history.replaceState(null, "", path);
+	window.history.pushState({ path: path }, "", path);
 
 	try {
 		const data = await res.json();
