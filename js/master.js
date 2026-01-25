@@ -8,9 +8,20 @@ window.addEventListener("DOMContentLoaded", async () => {
 	customElements.define('special-div', SpecialDiv);
 	const filePath = findPageFileName(window.location.hash.slice(1));
         //console.log(findPageFileName(window.location.hash.slice(1)));
+	let res;
 	try {
-                const res = await fetch(filePath);
+		console.log(filePath);
+                res = await fetch(filePath);
+		if (!res.ok) {
+			console.log(filePath, "404");
+			window.location.hash = "/404";
+			res = await fetch("pages/404.json");
+		}
+	} catch(err) {
+		console.errorr(err);
+	}
                 const data = await res.json();
+	try {
 
 		const iconListRes = await fetch("media/icons/iconList.json");
 		const iconListData = await iconListRes.json();
@@ -21,8 +32,6 @@ window.addEventListener("DOMContentLoaded", async () => {
         } catch(err) {
                 console.error("Loading error :", err);
                 const test = document.createElement("div"); 
-                test.innerHTML = "404", 16;
-          //      container.appendChild(test);
         }
 });
 
@@ -39,10 +48,22 @@ async function updateRoutine(hash) {
 	let hashCpy = hash;
 	if (!hash) { hashCpy = window.location.hash; }
 	console.log(hashCpy);
+	const path = hashCpy.slice(1) || '/';
+	const app = document.getElementById("app");
+	let res;
+
 	try {
-		const path = hashCpy.slice(1) || '/';
-		const app = document.getElementById("app");
-		const res = await fetch(findPageFileName(path));
+		res = await fetch(findPageFileName(path));
+		if (!res.ok) {
+			console.log("File does not exist");
+			window.location.hash = "/404";
+			res = await fetch('page/404.json');
+		}
+	} catch (err){
+		console.error(err);
+	}
+
+	try {
 		const data = await res.json();
 		await updatePage(app, data);
 	} catch (err) {
