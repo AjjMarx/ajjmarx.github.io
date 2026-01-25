@@ -46,15 +46,15 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 let updateHash = "";
 let updating = false
-async function updateRoutine() {
+async function updateRoutine(page) {
 	console.log("URL change");
 	if (updating) {
 		console.log("Can't load new page during an update. Logging for later");
 		return; 
 	}
 	updating = true;
-	const path = window.location.pathname;
-	console.log(window.location.pathname);
+	const path = page;
+	console.log(page);
 	const app = document.getElementById("app");
 	let res;
 
@@ -62,12 +62,16 @@ async function updateRoutine() {
 		res = await fetch(findPageFileName(path));
 		if (!res.ok) {
 			console.log("File does not exist");
-			window.location.hash = "/404";
+			sessionStorage.removeItem('spa_path');
+			window.history.replaceState(null, "", "/404");
 			res = await fetch('page/404.json');
 		}
 	} catch (err){
 		console.error(err);
 	}
+	
+	sessionStorage.removeItem('spa_path');
+	window.history.replaceState(null, "", path);
 
 	try {
 		const data = await res.json();
@@ -110,7 +114,7 @@ function renderPage(container, data) {
 		const link = e.target.closest('a');
 		if (link && link.href.startsWith(window.location.origin)) {
 			e.preventDefault();
-			console.log(link);
+			console.log(link.href);
 		}
 	});
 
