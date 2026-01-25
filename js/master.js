@@ -115,6 +115,7 @@ function renderPage(container, data) {
 		if (link && link.href.startsWith(window.location.origin)) {
 			e.preventDefault();
 			console.log(link.href);
+			updateRoutine(link.href);
 		}
 	});
 
