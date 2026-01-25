@@ -18,14 +18,17 @@ window.addEventListener("DOMContentLoaded", async () => {
                 res = await fetch(filePath);
 		if (!res.ok) {
 			console.log(filePath, "404");
+			sessionStorage.removeItem('spa_path');
 			window.history.replaceState(null, "", "/404");
 			res = await fetch("pages/404.json");
 		}
 	} catch(err) {
 		console.errorr(err);
 	}
-	
+
+	sessionStorage.removeItem('spa_path');
 	window.history.replaceState(null, "", path);
+
         const data = await res.json();
 	
 	try {
