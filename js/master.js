@@ -9,8 +9,8 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 	path = sessionStorage.getItem('spa_path').slice(1);
 	console.log(path);
-	console.log(window.location.pathname);
 	const filePath = findPageFileName(path);
+	console.log(filePath);
         //console.log(findPageFileName(window.location.hash.slice(1)));
 	let res;
 	try {
@@ -85,7 +85,7 @@ function findPageFileName(name) {
         if(name == "/") {
                 return "pages/home.json";
         } 
-        return "pages" + name + ".json";
+        return "pages/" + name + ".json";
 }
 
 async function generateChildren(container, content, isAnimated) {
