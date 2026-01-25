@@ -106,6 +106,14 @@ async function generateChildren(container, content, isAnimated) {
 horizontalElements = 0
 
 function renderPage(container, data) {
+	document.addEventListener('click', (e) => {
+		const link = e.target.cllosest('a');
+		if (link && link.href.startsWith(window.location.origin)) {
+			e.preventDefault();
+			console.log(link);
+		}
+	});
+
 	for (const item of data.content) {
 		if(item["type"] == "header" || item["type"] == "pageStack") {
 			horizontalElements++;	
