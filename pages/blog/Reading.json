@@ -11,7 +11,7 @@
 	"content": [
 
         {"type": "header", "data":[
-                {"type": "text", "data":{"all": "<a href=\"#/\"><h1 class=\"bold\"><center>Alexandra J. Marx</center></h1></a>"}},
+                {"type": "text", "data":{"all": "<a href=\"/\"><h1 class=\"bold\"><center>Alexandra J. Marx</center></h1></a>"}},
                 {"type": "toggle", "data":{ 
                         "location": "east",
                         "type": "language",
