@@ -94,6 +94,7 @@ async function updateRoutine(page) {
 
 window.addEventListener("popstate", (e) => {
 	console.log("Pop");
+	updateRoutine(window.location.pathname);
 });
 
 function findPageFileName(name) {
