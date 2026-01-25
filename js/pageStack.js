@@ -43,7 +43,7 @@ async function addPageStack(container, data, name, isAnimated) {
 							const res = await fetch(line.substring(1, line.indexOf("*")) + i + line.substring(line.indexOf("*")+1));
 							const data = await res.json();
 							list.push({
-								page: "#/" + lineP.substring(6, lineP.length - 5),
+								page: "/" + lineP.substring(6, lineP.length - 5),
 								title : `<p style="font-size: 22px;">` + String(data["meta"]["en_title"]) + "</p>",
 								subtitle : `<p style="color: #575757;">` + String(data["meta"]["en_subtitle"]) + "</p>",
 								tags : (data["meta"]["tags"])
