@@ -34,7 +34,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 		const iconListData = await iconListRes.json();
 
 		window.mainIconManager = new IconManager("media/icons", iconListData.list);
-		window.history.replaceState(null, "", savedPath)
                 renderPage(app, data);
         } catch(err) {
                 console.error("Loading error :", err);
