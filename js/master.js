@@ -7,9 +7,10 @@ window.addEventListener("DOMContentLoaded", async () => {
         const app = document.getElementById("app");
 	customElements.define('special-div', SpecialDiv);
 
-	console.log(sessionStorage.getItem('spa_path'));
+	path = sessionStorage.getItem('spa_path').slice(1);
+	console.log(path);
 	console.log(window.location.pathname);
-	const filePath = findPageFileName(window.location.pathname);
+	const filePath = findPageFileName(path);
         //console.log(findPageFileName(window.location.hash.slice(1)));
 	let res;
 	try {
