@@ -89,8 +89,7 @@ async function updateRoutine(page) {
 }
 
 window.addEventListener("popstate", (e) => {
-	e.preventDefault();
-	updateRoutine();
+	console.log("Pop");
 });
 
 function findPageFileName(name) {
