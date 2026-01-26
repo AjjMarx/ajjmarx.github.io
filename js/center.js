@@ -21,7 +21,6 @@ function removeCenter(element, isAnimated) {
 		//		console.log(child);
 				if (isAnimated && child.getBoundingClientRect().top < element.getBoundingClientRect().bottom) {
 					await removalFunctions[typeHash.get(parseInt(child.id))](child, true);
-					console.log("AAAAAv");
 				} else {
 					await removalFunctions[typeHash.get(parseInt(child.id))](child, false);
 				}

@@ -19,6 +19,7 @@ function addBody(container, data, name, isAnimated) {
         body.style.top = "4em";
         body.style.bottom = "10px";
 	body.style.minWidth = "592px";
+	body.content.style.textAlign = "left";
 	body.toggleAbberation();
 	let footer_allow = true
 	body.reload();
