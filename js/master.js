@@ -105,7 +105,7 @@ window.addEventListener("popstate", (e) => {
 });
 
 function findPageFileName(name) {
-        if(name == "/") {
+        if(!name || name == "/" || name == null) {
                 return "pages/home.json";
         } 
         return "pages" + name + ".json";
