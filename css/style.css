@@ -65,7 +65,7 @@ p {
         font-weight: 900;
 }
 
-a, .btn {
+.nav-link {
         text-decoration: none;
         color: inherit;
 }
