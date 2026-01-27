@@ -6,10 +6,12 @@ const supportedFuctions = {
         "center"   : true,
         "icon"     : true,
         "img"      : true,
-        "toggle"   : true,
+        "toggle"   : false,
 	"footer"   : true,
 	"line"     : true,
-	"graph"	   : true
+	"graph"	   : true,
+	"citation" : false,
+	"katex"    : true
 }
 
 const spawnFunctions = {
@@ -23,7 +25,8 @@ const spawnFunctions = {
         "toggle"   : addToggle,
 	"footer"   : addFooter,
 	"line"     : addLine,
-	"graph"	   : addGraph
+	"graph"	   : addGraph,
+	"katex"	   : addKatex
 }
 
 const updateFunctions = {
@@ -37,7 +40,8 @@ const updateFunctions = {
         "toggle"   : updateToggle,
 	"footer"   : updateFooter,
 	"line"     : updateLine,
-	"graph"	   : updateGraph
+	"graph"	   : updateGraph,
+	"katex"	   : updateKatex
 }
 
 const removalFunctions = {
@@ -51,7 +55,8 @@ const removalFunctions = {
         "toggle"   : removeToggle,
 	"footer"   : removeFooter,
 	"line"     : removeLine,
-	"graph"	   : removeGraph 
+	"graph"	   : removeGraph,
+	"katex"    : removeKatex
 }
 
 
