@@ -4,6 +4,108 @@
                 "zh_title": "我的工程",
                 "en_subtitle": "See my projects",
                 "zh_subtitle": "看着我工作的东西", 
-                "languages": ["en", "zh"]
-        }
+                "languages": ["en"],
+		"tags" : ["source"]
+        },
+
+	"content": [
+
+        {"type": "header", "data":[
+                {"type": "text", "data":{"all": "<a class='nav-link' href=\"/\"><h1 class=\"bold\"><center>Alexandra J. Marx</center></h1></a>"}},
+                {"type": "toggle", "data":{ 
+                        "location": "east",
+                        "type": "language",
+                        "dual": true,
+                        "options": [
+                                "<b>en</b>",
+                                "<zh>汉</zh>"
+                        ]
+                }}
+        ], "id": "a82f"},
+
+
+        {"type": "pageStack", "priority": 1, "data":{
+                "location": "left",
+                "en_title": "<h1>Resources</h1>",
+                "list": "pages/index.txt"
+        }, "id": "5a11"},
+
+        {"type": "body", "id": "72d8", "priority": 0, "data":[
+                {"type": "text", "data": {"all": "<center><h1>Portfolio</h1></center><span class=\n"}},         
+                {"type": "line", "data":{"width": 100}},
+		{"type":"text", "data":{"en": "My projects in near-reverse chronological order.</br></br>"}},
+                {"type": "line", "data":{"width": 100}},
+		{"type": "text", "data": {"all": "<h2>WIP: Graph Theory \"Teaspoon\" Language (2025 -)</h2><span class=\n"}},
+		
+		{"type":"span", "data":[
+		{"type": "img", "data": {
+			"location" : "right",
+			"file" : "media/TeaspoonGraph.jpeg",
+			"width" : 0.5,
+			"en_hover" : "Screenshot of the demo"
+		}},
+		{"type":"text", "data":{"all": "Current research, part of the <b>Undergraduate Research Opportunity Program</b> at the University of Michigan with Professor Mark Guzdial.</br>As part of this research I am developing an <b>educational visual programming language</b> to help educators teach graph theory concepts in computer science and programming through the context of social studies, geography, and the physical sciences. All graphics from scratch.</br><u>Frameworks: HTML+SVG, Javascript, WebGL</u></br>Repository: <a href='github.com/AjjMarx/TeaspoonGraph'>https://github.com/AjjMarx/TeaspoonGraph</a></br>Interactive: <a href='https://ajjmarx.github.io/TeaspoonGraph/'>ajjmarx.github.io/TeaspoonGraph/</a></br></br>"}}
+		]},
+                {"type": "line", "data":{"width": 100}},
+
+
+		{"type": "text", "data": {"all": "<h2>Personal Site/Tech Blog (2025 -)</h2><span class=\n"}},
+		
+		{"type":"span", "data":[
+		{"type": "img", "data": {
+			"location" : "center",
+			"file" : "media/SiteScreenshot.png",
+			"width" : 0.5,
+			"en_hover" : "Screenshot of the demo"
+		}},
+		{"type":"text", "data":{"all": "Youre here right now! Read my blog post to learn more about developing this page and my goals for the site. </br>Repository: <a href='https://github.com/AjjMarx/ajjmarx.github.io'>github.com/AjjMarx/ajjmarx.github.io/</a></br></br>"}}
+		]},
+                {"type": "line", "data":{"width": 100}},
+
+
+		{"type": "text", "data": {"all": "<h2>Public Papercrafts (2021 -)</h2><span class=\n"}},
+
+		{"type":"span", "data":[
+		{"type": "img", "data": {
+			"location" : "right",
+			"file" : "media/Papercrafts.jpeg",
+			"width" : 1,
+			"en_hover" : "Papercrafts of Cats, Tree, Teddy Bear, Bananas, and Apple"
+		}},
+		{"type":"text", "data":{"all": "Papercrafts designed in <b>Blender</b> and released online for <u>hundreds of thousands</u> of crafter to recreate at home on their home devices! Generated >$1100 in ad revenue and 240k views.</br></br>"}}
+		]},
+                {"type": "line", "data":{"width": 100}},
+
+
+		{"type": "text", "data": {"all": "<h2>3Blue1Brown Summer of Math Exposition #2 (2023, WCC)</h2><span class=\n"}},
+
+
+		{"type":"span", "data":[	
+		{"type":"text", "data":{"all": "<iframe width='336' height='190' style='display: block; float: none; margin: 1em auto; border-radius: 12px;' src='https://www.youtube.com/embed/L_joQb12QSE?si=6XBTYs1UuqZuA5zy' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' referrerpolicy='strict-origin-when-cross-origin' allowfullscreen></iframe></br>Online fully <b>animated</b> and narrated video created in <b>Blender</b> for the <u>3Blue1Brown summer of math exposition #2</u>. My video explains the geometric principals of Fortune's Algorithm for generating Voronoi diagrams. Topics include: Voronoi Diagrams, metric spaces, 3D graphing, geometry, algebra. Placed within top third of participants and made it to final judging. </br></br>"}}
+		]},
+                {"type": "line", "data":{"width": 100}},
+
+
+		{"type": "text", "data": {"all": "<h2>Extra Credits Game Jam: Paper Stapler</br>(2019, High School)</h2><span class=\n"}},
+
+		{"type":"span", "data":[
+		{"type":"text", "data":{"all": "<iframe width='250' height='160' style='display: block; float: right; margin: 1em auto; border-radius: 12px;' src='https://www.youtube.com/embed/x66MaadENNQ?si=KXxl2acfbpiLIhVM&amp;start=130' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' referrerpolicy='strict-origin-when-cross-origin' allowfullscreen></iframe> Weekend game jam run by the Video Game Design youtube Channel <u>extra credits</u>, theme: <b>cycles</b>. My submission was a simple game with the objective to align papers to staple them together. Selected to be presented in final video out of 261 submissions.</br><u>Framework: Pico-8</u></br><a href='https://smalltestaccount.itch.io/paper-stapler'>Play here!</a></br></br>"}}
+		]},
+                {"type": "line", "data":{"width": 100}},
+
+
+		{"type": "text", "data": {"all": "<h2>Draft Tiny Computer (2022, High School)</h2><span class=\n"}},
+
+
+		{"type":"span", "data":[
+		{"type":"text", "data":{"all": "<iframe width='200' height='120' style='display: block; float: left; margin: 1em; border-radius: 12px;' src='https://www.youtube.com/embed/JJTyXhvMX9g?si=b6Y0nALcs8st4MOS&amp;start=130' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' referrerpolicy='strict-origin-when-cross-origin' allowfullscreen></iframe>In my last year of high school I took our newest computer science course, which let us chose our own projects to be graded on. Of them, I decided to design a small self-contained computer from logic gates. Looking back, it is clearly not very good or functional but it was very much fun.</br></br>"}}
+		]},
+                {"type": "line", "data":{"width": 100}},
+
+		{"type":"footer", "id": "db62", "data":[
+			{"type": "text", "data": {"all": "<center><h3>Contact: ajjmarx@umich.edu</h3></center><span class=\n"}}
+		]}
+	]}
+        ]
+
 }
