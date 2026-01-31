@@ -8,18 +8,17 @@ window.addEventListener("DOMContentLoaded", async () => {
 	customElements.define('special-div', SpecialDiv);
 
 	path = sessionStorage.getItem('spa_path');
-	console.log(path);
 	const filePath = findPageFileName(path);
 	console.log(filePath);
         //console.log(findPageFileName(window.location.hash.slice(1)));
 	let res;
 	try {
-		console.log(filePath);
                 res = await fetch(filePath);
 		if (!res.ok) {
 			sessionStorage.removeItem('spa_path');
-			window.history.replaceState(null, "", "/404");
+			//window.history.replaceState(null, "", "/404");
 			window.history.pushState({ path: path }, "", "/404");
+			console.log(`/404 pushed to history`);
 			res = await fetch("pages/404.json");
 		}
 	} catch(err) {
@@ -27,9 +26,9 @@ window.addEventListener("DOMContentLoaded", async () => {
 	}
 
 	sessionStorage.removeItem('spa_path');
-	window.history.replaceState(null, "", path);
-	console.log("PUSH");
+	//window.history.replaceState(null, "", path);
 	window.history.pushState({ path: path }, "", path);
+	console.log(`${path} pushed to history`);
 
         const data = await res.json();
 	
@@ -64,8 +63,9 @@ async function updateRoutine(page) {
 		res = await fetch(findPageFileName(path));
 		if (!res.ok) {
 			sessionStorage.removeItem('spa_path');
-			window.history.replaceState(null, "", "/404");
+			//window.history.replaceState(null, "", "/404");
 			window.history.pushState({ path: path }, "", "/404");
+			console.log(`/404 pushed to history`);
 			res = await fetch('page/404.json');
 		}
 	} catch (err){
@@ -73,8 +73,9 @@ async function updateRoutine(page) {
 	}
 	
 	sessionStorage.removeItem('spa_path');
-	window.history.replaceState(null, "", path);
+	//window.history.replaceState(null, "", path);
 	window.history.pushState({ path: path }, "", path);
+	console.log(`${path} pushed to history`);
 
 	try {
 		const data = await res.json();
@@ -93,10 +94,8 @@ async function updateRoutine(page) {
 
 window.addEventListener("popstate", (e) => {
 	console.log("Pop");
-	setTimeout(() => {
-		console.log(window.location.pathname);
-		updateRoutine(window.location.pathname);
-	}, 500);
+	console.log(window.location.pathname);
+	updateRoutine(window.location.pathname);
 });
 
 function findPageFileName(name) {
