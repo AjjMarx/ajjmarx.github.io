@@ -56,3 +56,50 @@ async function updateCenter(element, newContent, isAnimated) {
 	});
 }
 
+function addSpan(container, data, name, isAnimated) {
+	const body = document.createElement("span");
+	body.id = assignName(name);
+	body.style.width = "100%";
+	container.appendChild(body);
+	generateChildren(body, data, isAnimated);
+}
+
+function removeSpan(element, isAnimated) {
+	statusHash.set(element.id, "removing");	
+	return new Promise(async (resolve, reject) => {	
+		let content = element;
+		for (child of Array.from(content.children).reverse()) {
+			if (typeHash.get(parseInt(child.id)) in supportedFuctions && supportedFuctions[typeHash.get(parseInt(child.id))]) {
+				if (isAnimated && child.getBoundingClientRect().top < element.getBoundingClientRect().bottom) {
+					await removalFunctions[typeHash.get(parseInt(child.id))](child, true);
+				} else {
+					await removalFunctions[typeHash.get(parseInt(child.id))](child, false);
+				}
+			}
+		}
+
+		statusHash.delete(element.id);
+		element.remove();
+		resolve();
+	});
+}
+
+function updateSpan(element, newContent, isAnimated) {
+	statusHash.set(element.id, "updating");	
+	return new Promise(async (resolve, reject) => {	
+		let content = element.content
+		for (child of Array.from(content.children).reverse()) {
+			if (typeHash.get(parseInt(child.id)) in supportedFuctions && supportedFuctions[typeHash.get(parseInt(child.id))]) {
+				if (isAnimated && child.getBoundingClientRect().top < element.getBoundingClientRect().bottom) {
+					await removalFunctions[typeHash.get(parseInt(child.id))](child, true);
+				} else {
+					await removalFunctions[typeHash.get(parseInt(child.id))](child, false);
+				}
+			}
+		}
+		await generateChildren(element,newContent, isAnimated)
+
+		statusHash.set(element.id, "idle");	
+		resolve();
+	});
+}
