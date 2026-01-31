@@ -7,7 +7,7 @@ function removeFooter(element) {
 }
 
 async function updateFooter(element, content) {
-	console.log("updating footer");
+	//console.log("updating footer");
 	return;
 }
 

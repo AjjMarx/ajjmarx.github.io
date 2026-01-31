@@ -11,7 +11,7 @@ function addCenter(container, data, name, isAnimated) {
 }
 
 function removeCenter(element, isAnimated) {
-	console.log("removing center");
+	//console.log("removing center");
 	statusHash.set(element.id, "removing");	
 	return new Promise(async (resolve, reject) => {	
 		let content = element;
@@ -34,7 +34,7 @@ function removeCenter(element, isAnimated) {
 }
 
 async function updateCenter(element, newContent, isAnimated) {
-	console.log("updating center");
+	//console.log("updating center");
 	statusHash.set(element.id, "updating");	
 	return new Promise(async (resolve, reject) => {	
 		let content = element.content

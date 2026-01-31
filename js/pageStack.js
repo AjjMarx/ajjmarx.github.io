@@ -35,7 +35,7 @@ async function addPageStack(container, data, name, isAnimated) {
 				if (line[0] == '-') {
 					if (line.indexOf("*") != -1) {
 						let i = 0;
-						console.log(line.substring(1, line.indexOf("*")) + i + line.substring(line.indexOf("*")+1));
+						//console.log(line.substring(1, line.indexOf("*")) + i + line.substring(line.indexOf("*")+1));
 						while (i < 10000 && await pathExists(line.substring(1, line.indexOf("*")) + i + line.substring(line.indexOf("*")+1))) { i++; }
 						i--;
 						while (i >= 0 && await pathExists(line.substring(1, line.indexOf("*")) + i + line.substring(line.indexOf("*")+1))) {
@@ -136,7 +136,7 @@ async function addPageStack(container, data, name, isAnimated) {
 
 	function dynamicUpdate() {
 		if (parseInt(container.offsetWidth, 10) >= 1000 && box.style.display != "block") {
-			console.log("wide");
+			//console.log("wide");
 			box.style.left = wideLeft;
 			let tId;
 			for (let [key, value] of typeHash) { if (value == 'header') { tId = key }}
@@ -145,7 +145,7 @@ async function addPageStack(container, data, name, isAnimated) {
 			box.style.backkgroundImage = "#00000000"
 			for (let pg of box.pgList) {pg.firstChild.reload();}
 		} else if (parseInt(container.offsetWidth, 10) < 1000 && box.style.display != "none") {
-			console.log("narrow");
+			//console.log("narrow");
 			box.style.left = "0px";
 			box.style.display = "none";
 			box.style.backgroundImage = "linear-gradient(to right, #FFFFFFFF, #00000000)";
@@ -166,7 +166,7 @@ convertedCols = ["#F579A4", "#F5824A", "#C89C00", "#70B346", "#00B99F", "#00B0E7
 
 async function removePageStack(element) {
 	if (element) {
-	console.log("removing page stack");		
+	//console.log("removing page stack");		
 	return new Promise((resolve) => {
 		interpolate(40, 302, 0, 0, 200, async (value) => {
 			element.style.width = 302 - value + 40 + "px";
@@ -177,10 +177,10 @@ async function removePageStack(element) {
 }
 
 async function updatePageStack(element, content) {
-	console.log("updating page stack");
-	if (element.directory && element.directory == content["list"]) { console.log("unchanged page stack"); return; }		
+	//console.log("updating page stack");
+	if (element.directory && element.directory == content["list"]) { return; }		
 	return new Promise(async (resolve) => {
-		console.log("Changing Page Stack");
+		//console.log("Changing Page Stack");
 		let oldId = element.id;	
 		let parentElement = element.parentElement;
 		await addPageStack(parentElement, content, 999999, true);
@@ -198,7 +198,7 @@ async function updatePageStack(element, content) {
 			newElement.style.right = "";
 			newElement.style.width = "302px";
 			newElement.style.left = "calc((100% - 1000px) / 2)";
-			console.log(newElement);
+			//console.log(newElement);
 			resolve();
 		})
 	});

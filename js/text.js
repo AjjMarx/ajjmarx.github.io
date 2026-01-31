@@ -1,6 +1,6 @@
 async function addText(container, data, name, isAnimated) {
         return new Promise((resolve, reject) => {
-		const text = document.createElement("div");
+		const text = document.createElement("a");
         	container.appendChild(text);
 		text.id = assignName(name);
 		let toAdd = "";

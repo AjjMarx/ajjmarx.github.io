@@ -85,7 +85,7 @@ function addHeader(container, data, name, isAnimated) {
 	document.addEventListener("click", async (event) => {
 		setTimeout(async () => {
 			if (header.box && header.box.style.display != "none" && dropDown.style.display != 'none' && performance.now() - timer > 400) {
-				console.log("outside");
+				//console.log("outside");
 				await interpolate(40, 302, 0, 0, 200, async (value) => {
 					header.box.style.width = 302 - value + 40 + "px";
 					for (chld of header.box.pgList) { if (chld.firstChild.tagName === 'SPECIAL-DIV') { chld.firstChild.reload(); } }
@@ -110,7 +110,7 @@ function removeHeader(element) {
 }
 
 async function updateHeader(element, content, isAnimated) {
-	console.log("updating header");
+	//console.log("updating header");
 	element.titleElement.content.innerHTML = content.find(item => item["type"] == "text")["data"]["all"];
 	return;
 }

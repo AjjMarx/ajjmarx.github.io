@@ -82,7 +82,7 @@ function addBody(container, data, name, isAnimated) {
 }
 
 async function removeBody(element, isAnimated) {
-	console.log("removing body"); 
+	//console.log("removing body"); 
 	//console.log(element);
 	if (!element) { return; }
 	let botm = parseInt(element.style.bottom);
@@ -99,7 +99,7 @@ async function removeBody(element, isAnimated) {
 }	
 
 async function updateBody(element, newContent, isAnimated) {
-	console.log("updating body", isAnimated);
+	//console.log("updating body", isAnimated);
 	statusHash.set(element.id, "updating");	
 	return new Promise(async (resolve, reject) => {	
 		let content = element.content
