@@ -78,9 +78,9 @@
 		
 		{"type": "img", "data": {
                         "location" : "right",
-                        "file": "media/ButterScotch.jpeg",
+                        "file": "media/SnowyPortrait.jpeg",
                         "width": 0.5,
-                        "en_hover": "Butterscotch",
+                        "en_hover": "Me the snowy woodlands, wearing a white blouse and black pants",
                         "zh_hover": "奶油糖"
                 }},
 
